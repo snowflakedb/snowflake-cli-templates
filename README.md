@@ -1,2 +1,3 @@
-# snowflake-cli-project-templates
-Project templates for Snowflake CLI init command
+# Snowflake CLI project templates
+
+TODO
