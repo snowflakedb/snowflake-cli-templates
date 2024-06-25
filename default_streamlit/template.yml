@@ -1,0 +1,9 @@
+files:
+  - snowflake.yml
+variables:
+  - name: name
+    default: streamlit_app
+  - name: stage
+    default: my_streamlit_stage
+  - name: query_warehouse
+    default: my_streamlit_warehouse

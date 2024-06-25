@@ -1,0 +1,11 @@
+files:
+  - snowflake.yml
+variables:
+  - name: project_name
+    promt: "Project name"
+    default: my_snowpark_project
+    type: string
+  - name: stage
+    prompt: "What stage should the procedures and functions be deployed to?"
+    default: dev_deployment
+    type: string

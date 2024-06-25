@@ -1,0 +1,10 @@
+definition_version: "1.1"
+streamlit:
+  name: <! name !>
+  stage: <! stage !>
+  query_warehouse: <! query_warehouse !>
+  main_file: streamlit_app.py
+  env_file: environment.yml
+  pages_dir: pages/
+  additional_source_files:
+    - common/hello.py
