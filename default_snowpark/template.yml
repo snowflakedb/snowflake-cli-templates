@@ -1,8 +1,8 @@
-files:
+files_to_render:
   - snowflake.yml
 variables:
   - name: project_name
-    promt: "Project name"
+    promt: "Name of the snowpatk project"
     default: my_snowpark_project
     type: string
   - name: stage
