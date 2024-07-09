@@ -22,6 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install Snowflake CLI
-        run: python -m pip install https://github.com/snowflakedb/snowflake-cli/pull/1270/commits/932adb508f2be468da234fa0423244a27de99662
+        run: python -m pip install git+https://github.com/snowflakedb/snowflake-cli.git@932adb508f2be468da234fa0423244a27de99662
+
       - name: Run help
         run: snow init -h
