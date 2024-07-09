@@ -2,7 +2,7 @@ files_to_render:
   - snowflake.yml
 variables:
   - name: project_name
-    promt: "Name of the snowpatk project"
+    prompt: "Project identifier (used to determine artifacts stage path)"
     default: my_snowpark_project
     type: string
   - name: stage
