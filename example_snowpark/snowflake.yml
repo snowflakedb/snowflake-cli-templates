@@ -1,7 +1,7 @@
 definition_version: "1.1"
 snowpark:
   project_name: "<! project_name | to_snowflake_identifier !>"
-  stage_name: "<! stage !>"
+  stage_name: "<! stage | to_snowflake_identifier !>"
   src: "app/"
   functions:
     - name: hello_function
