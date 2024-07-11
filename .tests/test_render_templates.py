@@ -1,5 +1,5 @@
+import pytest
 import subprocess
-import sys
 import yaml
 
 from pathlib import Path
@@ -8,14 +8,16 @@ from typing import List
 
 from snowflake.cli.api.project.schemas.template import Template
 
-EXCLUDE_PATHS = [".git", ".github"]
 
-"""
-Recursively looks for all template.yml files, assuming that they are
-placed in root directory of the template.
-Then calls `snow init` command on every template.
-Variable values are deduced from the template.yml file.
-"""
+_REPO_ROOT = Path(__file__).parent.parent
+
+
+def _find_all_templates():
+    return (
+        # "str" to make tests parameters human-readable
+        str(x.relative_to(_REPO_ROOT).parent)
+        for x in _REPO_ROOT.rglob("**/template.yml")
+    )
 
 
 def _read_template_metadata(template_root: Path) -> Template:
@@ -37,13 +39,9 @@ def _gen_input_values(template_root: Path) -> List[str]:
     return result
 
 
-def _exit_with_failed_render_error(template_root: Path) -> None:
-    print(f"Error while rendering template: {template_root}")
-    sys.exit(1)
-
-
-def _render_template(template_root: Path):
-    print(f"Rendering {template_root}")
+@pytest.mark.parametrize("template_root", _find_all_templates())
+def test_render_template(template_root):
+    template_root = _REPO_ROOT / template_root
     with TemporaryDirectory() as tmpdir:
         project_path = Path(tmpdir) / "project"
         snow = subprocess.Popen(
@@ -52,7 +50,7 @@ def _render_template(template_root: Path):
                 "init",
                 str(project_path),
                 "--template-source",
-                str(template_root),
+                template_root,
             ],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
@@ -62,21 +60,5 @@ def _render_template(template_root: Path):
             # reasonable 60s timeout
             snow.communicate(input=process_input.encode(), timeout=60)
         except subprocess.TimeoutExpired:
-            print("Timed out after 60s!")
-            _exit_with_failed_render_error(template_root)
-        if snow.returncode:
-            print(f"Rendering finished with {snow.returncode}")
-            _exit_with_failed_render_error(template_root)
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} PATH")
-        sys.exit(1)
-
-    root_path = Path(sys.argv[1])
-    for template_yml in root_path.rglob("**/template.yml"):
-        template_root = template_yml.parent
-        _render_template(template_root)
-
-    print("OK")
+            raise AssertionError("Timeout expired")
+        assert snow.returncode == 0, f"Rendering finished with {snow.returncode}"
