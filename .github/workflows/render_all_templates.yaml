@@ -12,7 +12,10 @@ concurrency:
 jobs:
   render_templates:
     name: Render templates
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
     steps:
       - uses: actions/checkout@v4
         with:
