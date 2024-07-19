@@ -6,7 +6,7 @@ For more details, check the [documentation](https://docs.snowflake.com/developer
 
 ## Contributing
 
-### Problems or feature requests
+### Issues or feature requests
 If you want to report as issue or request a new feature, please do so in
 [Snowflake CLI project repository](https://github.com/snowflakedb/snowflake-cli/issues).
 
