@@ -1,4 +1,4 @@
-name: Render all templates
+name: Run tests
 
 on:
   pull_request:
@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  render_templates:
-    name: Render templates
+  tests:
+    name: Run tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,8 +23,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.11'
       - name: Install Snowflake CLI
-        run: python -m pip install pytest git+https://github.com/snowflakedb/snowflake-cli.git
-      - name: Render all templates
+        run: python -m pip install pytest snowflake-snowpark-python git+https://github.com/snowflakedb/snowflake-cli.git
+      - name: Run tests
         run: python -m pytest .tests/ -vv
