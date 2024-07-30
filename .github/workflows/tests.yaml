@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   tests:
-    name: Render templates
+    name: Run tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.11'
       - name: Install Snowflake CLI
         run: python -m pip install pytest snowflake-snowpark-python git+https://github.com/snowflakedb/snowflake-cli.git
       - name: Run tests
