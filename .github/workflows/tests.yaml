@@ -1,4 +1,4 @@
-name: Render all templates
+name: Run tests
 
 on:
   pull_request:
