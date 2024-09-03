@@ -1,4 +1,4 @@
-definition_version: "1.1"
+<!! if snowflake_cli_version < "3.0.0" !!>definition_version: "1.1"
 streamlit:
   name: <! name | to_snowflake_identifier !>
   stage: <! stage | to_snowflake_identifier !>
@@ -8,3 +8,19 @@ streamlit:
   pages_dir: pages/
   additional_source_files:
     - common/hello.py
+<!! else !!>definition_version: '2'
+entities:
+  <! name | to_snowflake_identifier !>:
+    type: streamlit
+    identifier:
+      name: <! name | to_snowflake_identifier !>
+    main_file: streamlit_app.py
+    pages_dir: pages
+    query_warehouse: <! query_warehouse | to_snowflake_identifier !>
+    stage: <! stage | to_snowflake_identifier !>
+    artifacts:
+      - streamlit_app.py
+      - environment.yml
+      - pages
+      - common/hello.py
+<!! endif !!>
