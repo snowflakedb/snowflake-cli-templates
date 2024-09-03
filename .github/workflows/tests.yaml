@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        cli_version: [2.7.0, 2.8.0, latest]
+        cli_version: ['==2.7.0', '==2.8.0', ''] # check 2.X and latest release
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,6 +26,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install Snowflake CLI
-        run: python -m pip install pytest snowflake-snowpark-python git+https://github.com/snowflakedb/snowflake-cli.git==${{ matrix.cli_version }}
+        run: python -m pip install pytest snowflake-snowpark-python snowflake-cli-labs${{ matrix.cli_version }}
       - name: Run tests
         run: python -m pytest .tests/ -vv
