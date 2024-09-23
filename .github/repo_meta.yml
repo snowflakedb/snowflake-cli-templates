@@ -1,4 +1,4 @@
-point_of_contact: @snowflakedb/snowcli
+point_of_contact: "@snowflakedb/snowcli"
 production: true
 distributed: true
 modified: false
