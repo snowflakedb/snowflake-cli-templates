@@ -1,0 +1,12 @@
+# This file is used to install packages for local testing
+name: streamlit-python-testing
+channels:
+  - snowflake
+dependencies:
+  - python=<!! if snowflake_cli_version < "3.0.0" !!>3.8<!! else !!>3.10<!! endif !!>
+  - pip
+  - pip:
+      - pytest
+      - snowflake-cli-labs<!! if snowflake_cli_version < "3.0.0" !!>>=2.0.0,<3.0.0<!! else !!>>=3.0.0<!! endif !!>
+      - snowflake-snowpark-python>=1.15.0
+      - streamlit>=1.28.0 # this version could be different than the streamlit version in Snowflake, and therefore, 100% compatibility is not guaranteed.
