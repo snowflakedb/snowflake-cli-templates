@@ -4,5 +4,5 @@ files_to_render:
 variables:
   - name: project_name
     prompt: "Project identifier"
-    default: my_native_app_project
+    default: my_app_spcs_basic
     type: string
