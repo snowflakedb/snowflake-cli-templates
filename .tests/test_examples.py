@@ -9,6 +9,8 @@ from contextlib import contextmanager
 if VERSION < "2.8.0":
     pytest.skip("This test requires CLI >= 2.8.0", allow_module_level=True)
 
+_REPO_ROOT = Path(__file__).parent.parent
+
 
 @pytest.fixture()
 def initialize_project():
@@ -24,6 +26,8 @@ def initialize_project():
                     "--template",
                     template_name,
                     "--no-interactive",
+                    "--template-source",
+                    _REPO_ROOT,
                 ],
                 encoding="utf-8",
             )
@@ -55,7 +59,13 @@ def test_snowpark_examples_functions_work_locally(initialize_project):
 def test_example_snowpark_yml_is_correct(initialize_project):
     with initialize_project("example_snowpark") as snowpark_project:
         output = subprocess.check_output(
-            ["snow", "snowpark", "build"],
+            [
+                "snow",
+                "snowpark",
+                "build",
+                "--ignore-anaconda",
+                "--allow-shared-libraries",
+            ],
             encoding="utf-8",
         )
         assert "Build done." in output
