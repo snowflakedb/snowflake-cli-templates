@@ -5,8 +5,8 @@ from typing import List
 
 import pytest
 import yaml
-from snowflake.cli.api.project.schemas.template import Template
 from snowflake.cli.__about__ import VERSION
+from snowflake.cli.api.project.schemas.template import Template
 
 _REPO_ROOT = Path(__file__).parent.parent
 from packaging.version import parse

@@ -1,10 +1,11 @@
 import os
 import subprocess
+from contextlib import contextmanager
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from snowflake.cli.__about__ import VERSION
+
 import pytest
-from contextlib import contextmanager
+from snowflake.cli.__about__ import VERSION
 
 if VERSION < "2.8.0":
     pytest.skip("This test requires CLI >= 2.8.0", allow_module_level=True)
