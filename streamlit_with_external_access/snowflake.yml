@@ -1,0 +1,35 @@
+# For more information about structure of snowflake.yml for Streamlit see
+# https://docs.snowflake.com/developer-guide/snowflake-cli/streamlit-apps/manage-apps/initialize-app#create-the-project-definition-for-a-streamlit-app
+definition_version: '2'
+entities:
+  dashboard:
+    type: 'streamlit'
+    # Uses context variables to create fully qualified name of the dashboard
+    identifier:
+      name: 'dashboard'
+      schema: <% ctx.env.schema %>
+      database: <% ctx.env.database %>
+    query_warehouse: <! warehouse_name !>
+    artifacts:
+      - streamlit_app.py
+    meta:
+      use_mixins:
+        - external_access
+        - deployment_stage
+
+mixins:
+  # This mixin defines shared configuration for external access
+  external_access:
+    secrets:
+      # generic_secret is key used by get_secret_value method to reference the secret
+      generic_secret: <! secret_name | to_snowflake_identifier !>
+    external_access_integrations:
+      - <! external_access_integration_name !>
+
+  deployment_stage:
+    # Uses context variables to create fully qualified name of stage
+    stage: <% ctx.env.database %>.<% ctx.env.schema %>.<! stage_name | to_snowflake_identifier !>
+
+env:
+  schema: <! schema_name | to_snowflake_identifier !>
+  database: <! database_name | to_snowflake_identifier !>

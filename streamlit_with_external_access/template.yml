@@ -1,0 +1,27 @@
+files_to_render:
+  - snowflake.yml
+  - README.md
+  - setup.sql
+variables:
+  - name: database_name
+    prompt: "Database where the application will be created"
+    type: string
+  - name: schema_name
+    prompt: "Schema where the application will be created"
+    type: string
+    default: public
+  - name: warehouse_name
+    prompt: "Warehouse to be used by the application"
+    type: string
+  - name: stage_name
+    prompt: "What stage should the procedures and functions be deployed to"
+    default: dev_deployment
+    type: string
+  - name: secret_name
+    prompt: "Secret name to be used in the procedures and functions"
+    type: string
+    default: streamlit_secret
+  - name: external_access_integration_name
+    prompt: "External access integration name to be used in the procedures and functions"
+    type: string
+    default: streamlit_external_access_integration
