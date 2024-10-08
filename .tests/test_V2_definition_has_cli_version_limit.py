@@ -19,7 +19,7 @@ def template_has_cli_version_limit(template_root: Path) -> bool:
 
 
 def is_snowflake_yml_V2(template_root: Path) -> bool:
-    for file in template_root.rglob("*.yml"):
+    for file in template_root.rglob("snowflake.yml"):
         for line in file.read_text().splitlines():
             if re.match(r".*definition_version:\s+.?2.*", line):
                 return True
