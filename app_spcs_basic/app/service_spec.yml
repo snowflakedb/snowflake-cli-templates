@@ -1,0 +1,13 @@
+spec:
+  container:
+  - name: my-service
+    image: /spcs_na_db/public/images/spcs_na_service:latest
+    env:
+      PORT: 8080
+    readinessProbe:
+      port: 8080
+      path: /healthcheck
+  endpoint:
+  - name: my-endpoint
+    port: 8080
+    public: true

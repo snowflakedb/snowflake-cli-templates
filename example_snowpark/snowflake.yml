@@ -1,4 +1,4 @@
-definition_version: "1.1"
+<!! if snowflake_cli_version < "3.0.0" !!>definition_version: "1.1"
 snowpark:
   project_name: "<! project_name | to_snowflake_identifier !>"
   stage_name: "<! stage | to_snowflake_identifier !>"
@@ -21,3 +21,51 @@ snowpark:
       handler: "procedures.test_procedure"
       signature: ""
       returns: string
+<!! else !!>definition_version: '2'
+
+mixins:
+  snowpark_shared:
+    artifacts:
+      - dest: <! project_name | to_snowflake_identifier !>
+        src: app/
+    stage: <! stage | to_snowflake_identifier !>
+
+entities:
+
+  hello_function:
+    type: function
+    identifier:
+      name: hello_function
+    handler: functions.hello_function
+    signature:
+      - name: name
+        type: string
+    returns: string
+    meta:
+      use_mixins:
+        - snowpark_shared
+
+  hello_procedure:
+    type: procedure
+    identifier:
+      name: hello_procedure
+    handler: procedures.hello_procedure
+    signature:
+      - name: name
+        type: string
+    returns: string
+    meta:
+      use_mixins:
+        - snowpark_shared
+
+  test_procedure:
+    type: procedure
+    identifier:
+      name: test_procedure
+    handler: procedures.test_procedure
+    signature: ''
+    returns: string
+    meta:
+      use_mixins:
+        - snowpark_shared
+<!! endif !!>

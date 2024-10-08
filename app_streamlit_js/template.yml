@@ -1,0 +1,9 @@
+minimum_cli_version: "2.8.0"
+files_to_render:
+  - snowflake.yml
+  - README.md
+variables:
+  - name: project_name
+    prompt: "Project identifier"
+    default: my_app_streamlit_js
+    type: string

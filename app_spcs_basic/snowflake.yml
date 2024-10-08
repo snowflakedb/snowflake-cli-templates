@@ -1,0 +1,29 @@
+# This is a project definition file, a required component if you intend to use Snowflake CLI in a project directory such as this template.
+<!! if snowflake_cli_version < "3.0.0" !!>
+definition_version: 1
+native_app:
+  name: <! project_name | to_snowflake_identifier !>
+  source_stage: app_src.stage
+  artifacts:
+    - src: app/*
+      dest: ./
+<!! else !!>
+definition_version: 2
+entities:
+  pkg:
+    type: application package
+    identifier: <% fn.concat_ids('<! project_name | to_snowflake_identifier !>_pkg', ctx.env.suffix) %>
+    manifest: app/manifest.yml
+    artifacts:
+      - src: app/*
+        dest: ./
+
+  app:
+    type: application
+    from:
+      target: pkg
+    identifier: <% fn.concat_ids('<! project_name | to_snowflake_identifier !>', ctx.env.suffix) %>
+
+env:
+  suffix: <% fn.concat_ids('_', fn.sanitize_id(fn.get_username('unknown_user')) | lower) %>
+<!! endif !!>
