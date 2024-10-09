@@ -1,0 +1,52 @@
+# For more information about structure of snowflake.yml for Snowpark see
+# https://docs.snowflake.com/en/developer-guide/snowflake-cli/snowpark/create
+definition_version: '2'
+entities:
+  request_function:
+    type: function
+    # Uses context variables to create fully qualified name of the function
+    identifier:
+      name: request_function
+      schema: <% ctx.env.schema %>
+      database: <% ctx.env.database %>
+    handler: functions.request_function
+    returns: string
+    # No arguments for this function
+    signature: ""
+    meta:
+      use_mixins:
+        - external_access
+        - snowpark_shared
+
+  request_procedure:
+    type: procedure
+    # Uses context variables to create fully qualified name of the procedure
+    identifier:
+      name: request_procedure
+      schema: <% ctx.env.schema %>
+      database: <% ctx.env.database %>
+    handler: procedures.request_procedure
+    returns: string
+    # No arguments for this procedure
+    signature: ""
+    meta:
+      use_mixins:
+        - external_access
+        - snowpark_shared
+
+mixins:
+  # This mixin defines shared configuration for external access
+  external_access:
+    secrets:
+      # generic_secret is key used by the get_secret_value method to reference the secret
+      generic_secret: <! secret_name | to_snowflake_identifier !>
+    external_access_integrations:
+      - <! external_access_integration_name !>
+  snowpark_shared:
+    artifacts:
+      - app/
+    stage: <% ctx.env.database %>.<% ctx.env.schema %>.<! stage_name | to_snowflake_identifier !>
+
+env:
+  schema: <! schema_name | to_snowflake_identifier !>
+  database: <! database_name | to_snowflake_identifier !>
