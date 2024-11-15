@@ -17,7 +17,6 @@ entities:
   pkg:
     type: application package
     identifier: <% fn.concat_ids('<! project_name | to_snowflake_identifier !>_pkg', ctx.env.suffix) %>
-    manifest: app/manifest.yml
     artifacts:
       - src: app/*
         dest: ./
@@ -25,6 +24,9 @@ entities:
         dest: module-add/add.py
       - src: src/module-ui/src/*
         dest: streamlit/
+    <!! if snowflake_cli_version < "3.2.0" !!>
+    manifest: app/manifest.yml
+    <!! endif !!>
 
   app:
     type: application
