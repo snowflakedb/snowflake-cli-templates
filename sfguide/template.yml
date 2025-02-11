@@ -1,0 +1,31 @@
+minimum_cli_version: "2.8.0"
+files_to_render:
+  - scripts/setup.sql
+  - scripts/teardown.sql
+  - README.md
+variables:
+  - name: quickstart_name
+    prompt: "Name of the quickstart"
+  - name: quickstart_link
+    default: "TODO"
+    prompt: "Name of the to the existing quickstart, as in link"
+  - name: prefix
+    prompt: "Prefix used for objects created in Snowflake"
+  - name: setup_role
+    default: "ACCOUNTADMIN"
+    prompt: "Role to used to run setup script"
+  - name: warehouse
+    default: "DEMO_WH"
+    prompt: "Warehouse to be created. Will be prefixed"
+  - name: database
+    default: "DEMO_DB"
+    prompt: "Database to be created. Will be prefixed"
+  - name: schema
+    default: "PUBLIC"
+    prompt: "Schema to be created. Will be prefixed if not PUBLIC"
+  - name: stage
+    default: "DEMO_STAGE"
+    prompt: "Stage to be created. Will be prefixed"
+  - name: role
+    default: "DEMO_RL"
+    prompt: "Role to be created. Will be prefixed"
