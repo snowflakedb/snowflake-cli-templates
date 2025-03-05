@@ -1,0 +1,10 @@
+definition_version: 2
+entities:
+  my_project:
+    type: project
+    identifier: "<! name | to_snowflake_identifier !>"
+    stage: "<! stage | to_snowflake_identifier !>"
+    main_file: manifest.yml
+    artifacts:
+      - definitions/**
+      - manifest.yml
