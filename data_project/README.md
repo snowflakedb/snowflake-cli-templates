@@ -24,10 +24,10 @@ This enables the use of CI/CD best practices when working with Snowflake environ
 
 1. [manifest.yml][manifest] - this is the file where you can:
     * specify what files should be included in the version creation process. In the `include_definitions` list you can:
-      * attach a specific file by passing its relative path to the root of the project, e.g. `definitions/main.sql`
-      * attach all files from a specific directory, e.g. `definitions/.*`
-    * specify values for template variables. Definition files (templates) are rendered and filled up with variable values during the project execution process. Variable values are defined in the `template_variables` list, e.g. `example_db_name: "db1"`
-2. `definitions` - this is the directory that is initially configured in the [manifest.yml][manifest] to be a place for all `.sql` files containing project entities definitions. You can also arrange the directory/file structure by yourself.
+      * include a specific file by passing its relative path to the root of the project, e.g. `definitions/main.sql`
+      * include all files from a specific directory, e.g. `definitions/.*`
+    * specify values for template variables. Definition files (templates) are rendered as Jinja2 variables during the project execution process. Variable values are defined in the `template_variables` list, e.g. `example_db_name: "db1"`
+2. `definitions` - this is the default directory as defined in the [manifest.yml][manifest] for all `.sql` files containing project entity definitions. You are free to use an arbitrarily nested directory structure.
 3. [main.sql][main.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped. You can also replace [main.sql][main.sql] or create more `.sql` files to organise the code better.
 4. [snowflake.yml][snowflake] - this is the file required by the `Snowflake CLI`. The most important keys are:
     * `identifier` - specifies the name of `PROJECT` entity managed in Snowflake.
