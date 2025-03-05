@@ -2,11 +2,13 @@
 
 ## Introduction
 
-This is the template which can be considered as a starter of the Data Project in Snowflake. The Data
-Project allows applying changes to the account infrastructure in a declarative way which make this
-process more convenient comparing it to the imperative way. Data Projects automatically detect changes
-that should be applied to users infrastructure (creates, alters and drops) and take care of execution
-of defined statements in the correct order on its own.
+This template can be used as a starting point for a Snowflake Data Project.
+
+Data Projects enable declarative infrastructure management, presenting a less error-prone paradigm
+that integrates better with Git than imperative approaches. Through automated change detection, Data
+Projects keep the Snowflake environment in-sync with the definitions files in version management.
+New objects will be created, existing objects modified, and no longer needed objects deleted.
+This enables the use of CI/CD best practices when working with Snowflake environments.
 
 ## Directory Structure
 
@@ -26,19 +28,19 @@ of defined statements in the correct order on its own.
       * attach all files from a specific directory, e.g. `definitions/.*`
     * specify values for template variables. Definition files (templates) are rendered and filled up with variable values during the project execution process. Variable values are defined in the `template_variables` list, e.g. `example_db_name: "db1"`
 2. `definitions` - this is the directory that is initially configured in the [manifest.yml][manifest] to be a place for all `.sql` files containing project entities definitions. You can also arrange the directory/file structure by yourself.
-3. [main.sql][main.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. You can also replace [main.sql][main.sql] or create more `.sql` files to organise the code better.
+3. [main.sql][main.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped. You can also replace [main.sql][main.sql] or create more `.sql` files to organise the code better.
 4. [snowflake.yml][snowflake] - this is the file required by the `Snowflake CLI`. The most important keys are:
     * `identifier` - specifies the name of `PROJECT` entity managed in Snowflake.
     * `stage` - specifies the name of `STAGE` entity that stores project files in Snowflake.
     * `main_file` - the path to the projects' manifest file.
-    * `artifacts` - the list of paths to files/directories that should be used by the `Snowflake CLI` in Data Project management.
+    * `artifacts` - the list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
 5. [template.yml][template] - this file is used by the `Snowflake CLI` to generate a new project from this template.
 
 ## Working on Data Projects with Snowflake CLI
 
 ### 1. Initialize Data Project from the template
 
-In order to initialize a new Data Project from this template execute the command below and provide data required in command prompts. This command will create a new directory with Data Project files. Please fill `<project_dir_name>` with your own name.
+In order to initialize a new Data Project from this template execute the command below and provide data required in command prompts. This command will create a new directory with Data Project files. Please fill `<project_dir_name>` with where you want the project directory to be created.
 
 ```bash
 snow init <project_dir_name> --template data_project
@@ -92,9 +94,9 @@ You can also use this command for adding new versions, not only the initial one.
 
 ### 4. Project dry-run [optional]
 
-Before the real execution of the PROJECT, you can validate what changes will be applied to your infrastructure.
-In purpose of this action, you can perform the dry-run execution with the command below. This command won't
-persist any changes in the infrastructure.
+After creating a new PROJECT version, you can validate what changes will be applied to your Snowflake
+account with this command. This command will perform all the same validations and consistency checks
+like a regular `snow project execute`, but will not persist any changes to your Snowflake objects.
 
 ```bash
 snow project dry-run <project_name> --version <version_name>
@@ -108,8 +110,9 @@ snow project dry-run <! name | to_snowflake_identifier !> --version latest
 
 ### 5. Execute Project
 
-In order to apply changes to your infrastructure you need to execute the particular version of the PROJECT.
-You can do this with the following command:
+In order to apply changes to your Snowflake account you need to execute the particular version of
+the PROJECT. It is recommended to first perform a dry-run with the changes.You can do this with the
+following command:
 
 ```bash
 snow project execute <project_name> --version <version_name>
