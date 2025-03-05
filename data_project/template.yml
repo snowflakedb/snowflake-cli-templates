@@ -3,9 +3,9 @@ files_to_render:
 variables:
   - name: name
     default: my_project
-    prompt: "Name of the PROJECT object to be created in Snowflake"
+    prompt: "Name of the PROJECT object to be created in Snowflake (default: 'my_project')"
     type: string
   - name: stage
     default: my_project_stage
-    prompt: "Target STAGE to where project files should be deployed"
+    prompt: "Target STAGE to where project files should be deployed (default: 'my_project_stage')"
     type: string

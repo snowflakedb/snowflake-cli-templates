@@ -136,7 +136,6 @@ example usage:
 snow project add-version MY_PROJECT --from @DB.SCH.MY_PROJECT_STAGE  --dbname DB --schema SCH
 ```
 
-
 [manifest]: ./manifest.yml
 [snowflake]: ./snowflake.yml
 [main.sql]: ./definitions/main.sql
