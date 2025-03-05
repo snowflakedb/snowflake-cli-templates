@@ -36,6 +36,54 @@ This enables the use of CI/CD best practices when working with Snowflake environ
     * `artifacts` - the list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
 5. [template.yml][template] - this file is used by the `Snowflake CLI` to generate a new project from this template.
 
+### How to organize definition files structure
+
+Once you initialize a project from the template, it's time to create definitions that will set up your
+account. The template doesn't impose any file structure of definition files, but keep in mind that you
+don't need to keep all definition statements in a single file. It's possible to organize the code in
+multiple files divided into different directories, e.g. single file per single object type. An example,
+more complex files structure is shown below
+
+```
+<project_name>
+      ├── definitions
+      │   ├────── databases.sql
+      │   ├────── schemas.sql
+      │   ├────── roles.sql
+      │   └────── objects
+      │           ├────── tables.sql
+      │           ├────── views.sql
+      │           └────── tasks.sql
+      ├── manifest.yml
+      └── snowflake.yml
+```
+
+In order to include these files in new project versions it's also required to modify `snowflake.yaml`:
+
+```yaml
+definition_version: 2
+entities:
+  my_project:
+    type: project
+    identifier: "my_project"
+    stage: "my_project_stage"
+    main_file: manifest.yml
+    artifacts:
+      - definitions/objects.sql
+      - definitions/schema_definition.sql
+      - definitions/sadf/**
+      - manifest.yml
+```
+
+It's also  required to include all files from the `definitions` directory in the `manifest.yaml` file:
+
+```yaml
+manifest_version: 1.0
+
+include_definitions:
+  - definitions/.*
+```
+
 ## Working on Data Projects with Snowflake CLI
 
 ### 1. Initialize Data Project from the template
