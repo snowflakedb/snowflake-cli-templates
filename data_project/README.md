@@ -153,7 +153,7 @@ snow project dry-run <project_name> --version <version_name>
 example usage:
 
 ```bash
-snow project dry-run <! name | to_snowflake_identifier !> --version latest
+snow project dry-run MY_PROJECT --version latest
 ```
 
 ### 5. Execute Project
@@ -169,7 +169,7 @@ snow project execute <project_name> --version <version_name>
 example usage:
 
 ```bash
-snow project execute <! name | to_snowflake_identifier !> --version latest
+snow project execute MY_PROJECT --version latest
 ```
 
 ### 6. Add Project version
@@ -184,7 +184,7 @@ snow project add-version <project_name> --from <stage_path>
 example usage:
 
 ```bash
-snow project add-version <! name | to_snowflake_identifier !> --from @<! stage | to_snowflake_identifier !>
+snow project add-version MY_PROJECT --from @MY_PROJECT_STAGE
 ```
 
 [manifest]: ./manifest.yml

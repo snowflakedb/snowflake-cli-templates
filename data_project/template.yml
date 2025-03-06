@@ -1,7 +1,6 @@
 minimum_cli_version: "3.0.0"
 files_to_render:
   - snowflake.yml
-  - README.md
 variables:
   - name: name
     default: my_project
