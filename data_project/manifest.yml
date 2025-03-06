@@ -1,0 +1,8 @@
+manifest_version: 1.0
+
+include_definitions:
+  - definitions/.*
+
+template_variables:
+  - example_db_name: "db1"
+  - example_column_name: "col_1"
