@@ -63,10 +63,14 @@ def test_render_template(template_root):
         try:
             process_input = "\n".join(_gen_input_values(metadata))
             # reasonable 60s timeout
-            snow.communicate(input=process_input.encode(), timeout=60)
+            stdout, stderr = snow.communicate(input=process_input.encode(), timeout=60)
         except subprocess.TimeoutExpired:
             raise AssertionError("Timeout expired")
-        assert snow.returncode == 0, f"Rendering finished with {snow.returncode}"
+        assert snow.returncode == 0, (
+            f"Rendering finished with {snow.returncode}:\n"
+            f"======= stdout =======\n{stdout.decode()}\n"
+            f"======= stderr =======\n{stderr.decode()}"
+        )
 
 
 @pytest.mark.parametrize("template_root", _find_all_templates())
