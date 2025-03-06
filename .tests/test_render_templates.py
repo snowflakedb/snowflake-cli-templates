@@ -68,8 +68,8 @@ def test_render_template(template_root):
             raise AssertionError("Timeout expired")
         assert snow.returncode == 0, (
             f"Rendering finished with {snow.returncode}:\n"
-            f"======= stdout =======\n{stdout}\n"
-            f"======= stderr =======\n{stderr}"
+            f"======= stdout =======\n{stdout.decode()}\n"
+            f"======= stderr =======\n{stderr.decode()}"
         )
 
 
