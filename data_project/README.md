@@ -22,20 +22,20 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
       └── template.yml (5)
 ```
 
-1. [manifest.yml][manifest] - this is the file where you can:
-    * specify what files should be included in the version creation process. In the `include_definitions` list you can:
+1. [manifest.yml][manifest] - is the file that defines:
+    * what files should be included in the version creation process. In the `include_definitions` list you can:
       * include a specific file by passing its relative path to the root of the project, e.g. `definitions/main.sql`
       * include all files from a specific directory, e.g. `definitions/.*`
-    * specify values for template variables. Definition files (templates) are rendered as Jinja2 variables during the project execution process. Variable values are defined in the `template_variables` list, e.g. `example_db_name: "db1"`
-2. `definitions` - this is the default directory as defined in the [manifest.yml][manifest] for all `.sql` files containing project entity definitions. You are free to use an arbitrarily nested directory structure.
+    * values for template variables. Definition files (templates) are rendered as Jinja2 variables during the project execution process. Variable values are defined in the `template_variables` list, e.g. `example_db_name: "db1"`
+2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. [main.sql][main.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped. You can also replace [main.sql][main.sql] or create more `.sql` files to organise the code better.
-4. [snowflake.yml][snowflake] - this is the file required by the `Snowflake CLI`. The most important keys are:
-    * `identifier` - specifies the name of `PROJECT` entity managed in Snowflake.
-    * `stage` - specifies the name of `STAGE` entity that stores project files in Snowflake.
-    * `main_file` - the path to the projects' manifest file.
-    * `artifacts` - the list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
-5. [template.yml][template] - this file is used by the `Snowflake CLI` to generate a new project from this template.
-6. `<project_name>` - name of the directory that includes project Data Project artifacts.
+4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake Data Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
+    * `identifier` - name of `PROJECT` entity managed in Snowflake.
+    * `stage` - name of `STAGE` entity that stores project files in Snowflake.
+    * `main_file` - path to the projects' manifest file.
+    * `artifacts` - list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
+5. [template.yml][template] - is the name of the template file Snowflake CLI uses to generate a new project.
+6. `<project_name>` - is the name of the directory that includes project Data Project artifacts.
 
 ### How to organize definition files structure
 
