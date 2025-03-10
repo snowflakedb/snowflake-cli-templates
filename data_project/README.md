@@ -2,18 +2,18 @@
 
 ## Introduction
 
-This template can be used as a starting point for a Snowflake Data Project.
+You can use this template as a starter project for a Snowflake Data Project.
 
 Data Projects enable declarative infrastructure management, presenting a less error-prone paradigm
 that integrates better with Git than imperative approaches. Through automated change detection, Data
-Projects keep the Snowflake environment in-sync with the definitions files in version management.
-New objects will be created, existing objects modified, and no longer needed objects deleted.
-This enables the use of CI/CD best practices when working with Snowflake environments.
+Projects keep the Snowflake environment synchronized with the definitions files in version management.
+These projects automatically create new objects, modify existing objects, and delete objects that are
+no longer needed, which supports CI/CD best practices when working with Snowflake environments.
 
 ## Directory Structure
 
 ```
-<project_name>
+<project_name> (6)
       ├── definitions (2)
       │   ├────── main.sql (3)
       │   └────── [...]
@@ -35,14 +35,15 @@ This enables the use of CI/CD best practices when working with Snowflake environ
     * `main_file` - the path to the projects' manifest file.
     * `artifacts` - the list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
 5. [template.yml][template] - this file is used by the `Snowflake CLI` to generate a new project from this template.
+6. `<project_name>` - name of the directory that includes project Data Project artifacts.
 
 ### How to organize definition files structure
 
-Once you initialize a project from the template, it's time to create definitions that will set up your
+Once you initialize a project from the template, you create the definitions that will set up your
 account. The template doesn't impose any file structure of definition files, but keep in mind that you
-don't need to keep all definition statements in a single file. It's possible to organize the code in
-multiple files divided into different directories, e.g. single file per single object type. An example,
-more complex files structure is shown below
+don't need to keep all definition statements in a single file. You can organize the code in multiple
+files divided into different directories, such as single file per single object type. The following
+example uses a more complex file structure:
 
 ```
 <project_name>
@@ -58,7 +59,7 @@ more complex files structure is shown below
       └── snowflake.yml
 ```
 
-In order to include these files in new project versions it's also required to modify `snowflake.yaml`:
+To include these files in new project versions, you must also modify `snowflake.yaml`, as shown:
 
 ```yaml
 definition_version: 2
@@ -75,7 +76,7 @@ entities:
       - manifest.yml
 ```
 
-It's also  required to include all files from the `definitions` directory in the `manifest.yaml` file:
+You must include all files from the `definitions` directory in the `manifest.yaml` file:
 
 ```yaml
 manifest_version: 1.0
@@ -86,9 +87,11 @@ include_definitions:
 
 ## Working on Data Projects with Snowflake CLI
 
-### 1. Initialize Data Project from the template
+### 1. Initialize a Data Project from the template
 
-In order to initialize a new Data Project from this template execute the command below and provide data required in command prompts. This command will create a new directory with Data Project files. Please fill `<project_dir_name>` with where you want the project directory to be created.
+To initialize a new Data Project from this template, execute the following command and provide the
+data required in command prompts. This command creates a new directory with Data Project files.
+Replace `<project_dir_name>` with the desired location for the project directory.
 
 ```bash
 snow init <project_dir_name> --template data_project
@@ -102,8 +105,8 @@ snow init MY_PROJECT --template data_project
 
 ### 2. Define entities in `.sql` files
 
-In this step you need to define entities that will be managed by the project. You can define these
-entities in the prepared [definitions/main.sql][main.sql] file, but you can also create your own files. If you
+In this step, you define the entities you want the project to manage. You can define these entities
+in the prepared [definitions/main.sql][main.sql] file, but you can also create your own files. If you
 decide to add more `.sql` files, make sure that they will be included in the process of creating a new
 project version by adding their paths to `include_definitions` list in the [manifest.yaml][manifest] file.
 
@@ -122,10 +125,10 @@ An example content of the definition file:
     DEFINE TABLE db2.sch2.tb2 (col_3 integer, col_4 varchar);
 ```
 
-### 3. Create Project
+### 3. Create the Project
 
-Once the entity definitions included in definition files are ready to be applied to your infrastructure,
-it's required to create a `PROJECT` entity with a new `VERSION` from your local files. You can perform this
+After entity definitions included in definition files are ready to be applied to your infrastructure,
+you must create a `PROJECT` entity with a new `VERSION` from your local files. You can perform this
 operation by executing the command below:
 
 ```bash
