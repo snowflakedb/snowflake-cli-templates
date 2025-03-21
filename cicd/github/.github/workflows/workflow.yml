@@ -33,4 +33,4 @@ jobs:
 
       - name: Dry run project
         run: |
-          snow project dry-run <! name | to_snowflake_identifier !> customised
+          snow project dry-run <! name | to_snowflake_identifier !> <! foo !>

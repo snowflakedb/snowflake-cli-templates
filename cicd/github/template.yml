@@ -1,13 +1,16 @@
 minimum_cli_version: "3.0.0"
 files_to_render:
-  - snowflake.yml
   - ".github/workflows/workflow.yml"
 variables:
-  - name: name
-    default: my_project
-    prompt: "Name of the PROJECT object to be created in Snowflake (default: 'my_project')"
-    type: string
+#  - name: name
+#    default: 2
+#    prompt: "Name of the PROJECT object to be created in Snowflake (default: 'my_project')"
+#    type: int
   - name: stage
     default: my_project_stage
     prompt: "Target STAGE to where project files should be deployed (default: 'my_project_stage')"
+    type: string
+  - name: foo
+    default: bar
+    prompt: "gimme foo"
     type: string
