@@ -15,7 +15,9 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 ```
 <project_name> (6)
       ├── definitions (2)
-      │   ├────── main.sql (3)
+      │   ├────── account_objects.sql
+      │   ├────── schema_definition.sql
+      │   ├────── schema_objects.sql (3)
       │   └────── [...]
       ├── manifest.yml (1)
       ├── snowflake.yml (4)
@@ -24,11 +26,11 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 
 1. [manifest.yml][manifest] - is the file that defines:
     * what files should be included in the version creation process. In the `include_definitions` list you can:
-      * include a specific file by passing its relative path to the root of the project, e.g. `definitions/main.sql`
+      * include a specific file by passing its relative path to the root of the project, e.g. `definitions/account_objects.sql`
       * include all files from a specific directory, e.g. `definitions/.*`
     * values for template variables. Definition files (templates) are rendered as Jinja2 variables during the project execution process. Variable values are defined in the `template_variables` list, e.g. `example_db_name: "db1"`
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
-3. [main.sql][main.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped. You can also replace [main.sql][main.sql] or create more `.sql` files to organise the code better.
+3. [schema_objects.sql][schema_objects.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
 4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake Data Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
     * `identifier` - name of `PROJECT` entity managed in Snowflake.
     * `stage` - name of `STAGE` entity that stores project files in Snowflake.
@@ -70,9 +72,10 @@ entities:
     stage: "my_project_stage"
     main_file: manifest.yml
     artifacts:
-      - definitions/schema_objects.sql
-      - definitions/schema_definition.sql
-      - definitions/sadf/**
+      - definitions/databases.sql
+      - definitions/schemas.sql
+      - definitions/roles.sql
+      - definitions/objects/*
       - manifest.yml
 ```
 
@@ -106,7 +109,7 @@ snow init MY_PROJECT --template data_project
 ### 2. Define entities in `.sql` files
 
 In this step, you define the entities you want the project to manage. You can define these entities
-in the prepared [definitions/main.sql][main.sql] file, but you can also create your own files. If you
+in the prepared `definitions/*.sql` files, but you can also create your own files. If you
 decide to add more `.sql` files, make sure that they will be included in the process of creating a new
 project version by adding their paths to `include_definitions` list in the [manifest.yaml][manifest] file.
 
@@ -192,5 +195,5 @@ snow project add-version MY_PROJECT --from @MY_PROJECT_STAGE
 
 [manifest]: ./manifest.yml
 [snowflake]: ./snowflake.yml
-[main.sql]: ./definitions/main.sql
+[schema_objects.sql]: ./definitions/schema_objects.sql
 [template]: ./template.yml
