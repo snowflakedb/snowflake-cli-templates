@@ -6,5 +6,5 @@ entities:
     stage: "<! stage | to_snowflake_identifier !>"
     main_file: manifest.yml
     artifacts:
-      - definitions/**
+      - definitions/*
       - manifest.yml
