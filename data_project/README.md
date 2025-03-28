@@ -70,7 +70,7 @@ entities:
     stage: "my_project_stage"
     main_file: manifest.yml
     artifacts:
-      - definitions/objects.sql
+      - definitions/schema_objects.sql
       - definitions/schema_definition.sql
       - definitions/sadf/**
       - manifest.yml
