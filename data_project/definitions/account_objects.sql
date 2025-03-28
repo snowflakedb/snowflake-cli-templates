@@ -12,7 +12,3 @@ define role WAREHOUSE_MANAGER
 define warehouse PARENT_TASK_WH warehouse_size='large';
 
 define warehouse CHILD_TASK_WH warehouse_size='small';
-
--- TAGS:
-define tag VISIBILITY
-    allowed_values 'private', 'public';
