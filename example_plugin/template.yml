@@ -1,0 +1,13 @@
+minimum_cli_version: "3.5.0"
+files_to_render:
+  - pyproject.toml
+  - src/snowflake_cli_example_plugin/manager.py
+variables:
+  - name: plugin_name
+    prompt: "Plugin name (used to identify plugin inside CLI)"
+    default: example-plugin
+    type: string
+  - name: plugin_package_name
+    prompt: "Package name (used to identify package by installers)"
+    default: snowflakecli-example-plugin
+    type: string

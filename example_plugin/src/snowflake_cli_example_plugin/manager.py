@@ -37,9 +37,9 @@ class SecretType(str, Enum):
 class SecretManager(SqlExecutionMixin):
     def __init__(self):
         super().__init__()
-        # reading config from [cli.plugins.example-plugin.config] section
+        # reading config from [cli.plugins.<! plugin_name !>.config] section
         config_provider = PluginConfigProvider()
-        self.config = config_provider.get_config("example-plugin")
+        self.config = config_provider.get_config("<! plugin_name !>")
 
     def _execute_query(self, query: str) -> SnowflakeCursor:
         print_query = self.config.internal_config.get("print_queries", False)
