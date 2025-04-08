@@ -34,7 +34,6 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake Data Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
     * `identifier` - name of `PROJECT` entity managed in Snowflake.
     * `stage` - name of `STAGE` entity that stores project files in Snowflake.
-    * `main_file` - path to the projects' manifest file.
     * `artifacts` - list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
 5. [template.yml][template] - is the name of the template file Snowflake CLI uses to generate a new project.
 6. `<project_name>` - is the name of the directory that includes project Data Project artifacts.
@@ -70,13 +69,11 @@ entities:
     type: project
     identifier: "my_project"
     stage: "my_project_stage"
-    main_file: manifest.yml
     artifacts:
       - definitions/databases.sql
       - definitions/schemas.sql
       - definitions/roles.sql
       - definitions/objects/*
-      - manifest.yml
 ```
 
 You must include all files from the `definitions` directory in the `manifest.yaml` file:
