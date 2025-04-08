@@ -24,6 +24,10 @@ from snowflake.cli.api.output.types import (
 
 from snowflake_cli_example_plugin.manager import SecretManager, SecretType
 
+# If you choose CommandType.SINGLE_COMMAND in plugin_spec.py, SnowTyperFactory instance still need to be created,
+# but it should register (via @app.command) only one command.
+# In that case [name] and [help] of the SnowTyperFactory will be ignored.
+
 app = SnowTyperFactory(
     name="secret",  # name of the command group - commands will be available as "snow object secret X"
     help="(plugin) Manage secrets in Snowflake.",

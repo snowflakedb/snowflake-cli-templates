@@ -1,5 +1,6 @@
 minimum_cli_version: "3.5.0"
 files_to_render:
+  - README.md
   - pyproject.toml
   - src/snowflake_cli_example_plugin/manager.py
 variables:
