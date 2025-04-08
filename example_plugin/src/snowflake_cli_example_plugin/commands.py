@@ -4,28 +4,25 @@ This file contains implementation of "secret" command group containing three com
 It presents you usage examples of snowflake.cli.api commands utils.
 """
 
+from typing import Optional
+
 import typer
-from snowflake.cli.api.commands.decorators import (
-    with_output,
-)
-from snowflake.cli.api.commands.snow_typer import SnowTyperFactory
+from click import ClickException
 from snowflake.cli.api.commands.flags import (
+    IdentifierType,
     IfNotExistsOption,
     ReplaceOption,
     like_option,
-    IdentifierType,
 )
+from snowflake.cli.api.commands.snow_typer import SnowTyperFactory
+from snowflake.cli.api.identifiers import FQN
 from snowflake.cli.api.output.types import (
     CommandResult,
-    SingleQueryResult,
     QueryResult,
-    MessageResult,
+    SingleQueryResult,
 )
-from snowflake.cli.api.identifiers import FQN
-from snowflake_cli_example_plugin.manager import SecretType, SecretManager
-from typing import Optional, Tuple
-from click import ClickException
 
+from snowflake_cli_example_plugin.manager import SecretManager, SecretType
 
 app = SnowTyperFactory(
     name="secret",  # name of the command group - commands will be available as "snow object secret X"

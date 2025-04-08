@@ -3,13 +3,14 @@ Implementation of SecretManager, presenting an example of running SQL queries in
 and how to use internal plugin config.
 """
 
+from enum import Enum
+from typing import Optional
+
+from click import ClickException
+from snowflake.cli.api.identifiers import FQN
 from snowflake.cli.api.plugins.plugin_config import PluginConfigProvider
 from snowflake.cli.api.sql_execution import SqlExecutionMixin
 from snowflake.connector.cursor import SnowflakeCursor
-from enum import Enum
-from click import ClickException
-from snowflake.cli.api.identifiers import FQN
-from typing import Optional
 
 
 class SecretType(str, Enum):
