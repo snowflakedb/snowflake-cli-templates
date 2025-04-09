@@ -38,14 +38,14 @@ After that, you should see `secret` command in `snow object` command group:
 snow object --help
 
 ...
-╭─ Commands ─────────────────────────────────────────────────────────────────────────╮
-│ create     Create an object of a given type. Check documentation for the list of   │
-│            supported objects and parameters.                                       │
-│ describe   Provides description of an object of given type.                        │
-│ drop       Drops Snowflake object of given name and type.                          │
-│ list       Lists all available Snowflake objects of given type.                    │
-│ secret     (plugin) Manage secrets in Snowflake.                                   │
-╰────────────────────────────────────────────────────────────────────────────────────╯
++- Commands -------------------------------------------------------------------------+
+| create     Create an object of a given type. Check documentation for the list of   |
+|            supported objects and parameters.                                       |
+| describe   Provides description of an object of given type.                        |
+| drop       Drops Snowflake object of given name and type.                          |
+| list       Lists all available Snowflake objects of given type.                    |
+| secret     (plugin) Manage secrets in Snowflake.                                   |
++------------------------------------------------------------------------------------+
 ```
 
 To uninstall the plugin, uninstall its package using the same package manager used for installation:
@@ -66,14 +66,12 @@ print_queries = true
 
 This plugin consists of 5 files:
 ```
-.
-├── pyproject.toml
-└── src
-    └── snowflake_cli_example_plugin
-        ├── __init__.py
-        ├── commands.py
-        ├── manager.py
-        └── plugin_spec.py
+- pyproject.toml
+- src/snowflake_cli_example_plugin/
+    - __init__.py
+    - commands.py
+    - manager.py
+    - plugin_spec.py
 ```
 
 ### pyproject.toml
