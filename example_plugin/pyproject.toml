@@ -1,0 +1,18 @@
+# Example pyproject.toml for a Snowflake CLI plugin
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "<! plugin_package_name !>"
+requires-python = ">=3.8"
+dependencies = [
+    "snowflake-cli>=3.5.0"
+]
+version = "1.0.0"
+
+# Each entrypoint defined in this section will appear as separate plugin in Snowflake CLI.
+# You can enable/disable them separately
+[project.entry-points."snowflake.cli.plugin.command"]
+<! plugin_name !> = "snowflake_cli_example_plugin.plugin_spec"
