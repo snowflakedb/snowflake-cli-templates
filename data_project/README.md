@@ -65,7 +65,7 @@ To include these files in new project versions, you must also modify `snowflake.
 ```yaml
 definition_version: 2
 entities:
-  my_project_entity:
+  project_entity_id:
     type: project
     identifier: "my_project_name"
     stage: "my_project_stage"
