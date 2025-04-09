@@ -177,17 +177,22 @@ snow project execute MY_PROJECT_NAME --version latest
 
 ### 6. Add Project version
 
-If you have already prepared project files for a new PROJECT VERSION in one of your Snowflake STAGEs,
+If you have already prepared project files for a new PROJECT VERSION, either locally or have it already in one of your Snowflake STAGEs,
 and you want to create this VERSION, you can use the command below:
 
 ```bash
-snow project add-version <project_name> --from <stage_path>
+snow project add-version <project_name> [--from <stage_path>]
 ```
 
 example usage:
-
+If `--from` argument is skipped, new VERSION will be created from local files
 ```bash
-snow project add-version PROJECT_ENTITY_ID --from @MY_PROJECT_STAGE
+snow project add-version MY_PROJECT_ENTITY
+```
+
+And if `--from` is provided, new PROJECT VERSION will be created from referenced stage:
+```bash
+snow project add-version MY_PROJECT_ENTITY --from @MY_PROJECT_STAGE
 ```
 
 [manifest]: ./manifest.yml
