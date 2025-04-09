@@ -3,7 +3,7 @@ files_to_render:
   - snowflake.yml
 variables:
   - name: name
-    default: my_project
+    default: my_project_name
     prompt: "Name of the PROJECT object to be created in Snowflake. Default: "
     type: string
   - name: stage
