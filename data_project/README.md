@@ -192,7 +192,7 @@ snow project add-version PROJECT_ENTITY_ID
 
 And if `--from` is provided, new PROJECT VERSION will be created from referenced stage:
 ```bash
-snow project add-version MY_PROJECT_ENTITY --from @MY_PROJECT_STAGE
+snow project add-version PROJECT_ENTITY_ID --from @MY_PROJECT_STAGE
 ```
 
 [manifest]: ./manifest.yml
