@@ -187,7 +187,7 @@ snow project add-version <project_name> [--from <stage_path>]
 example usage:
 If `--from` argument is skipped, new VERSION will be created from local files
 ```bash
-snow project add-version MY_PROJECT_ENTITY
+snow project add-version PROJECT_ENTITY_ID
 ```
 
 And if `--from` is provided, new PROJECT VERSION will be created from referenced stage:
