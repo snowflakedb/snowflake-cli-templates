@@ -65,9 +65,9 @@ To include these files in new project versions, you must also modify `snowflake.
 ```yaml
 definition_version: 2
 entities:
-  my_project:
+  project_entity_id:
     type: project
-    identifier: "my_project"
+    identifier: "my_project_name"
     stage: "my_project_stage"
     artifacts:
       - definitions/databases.sql
@@ -132,7 +132,7 @@ you must create a `PROJECT` entity with a new `VERSION` from your local files. Y
 operation by executing the command below:
 
 ```bash
-snow project create-version
+snow project create
 ```
 
 This command will create a new `STAGE` if it doesn't already exist or use an existing one as a target
@@ -156,7 +156,7 @@ snow project dry-run <project_name> --version <version_name>
 example usage:
 
 ```bash
-snow project dry-run MY_PROJECT --version latest
+snow project dry-run MY_PROJECT_NAME --version latest
 ```
 
 ### 5. Execute Project
@@ -172,22 +172,27 @@ snow project execute <project_name> --version <version_name>
 example usage:
 
 ```bash
-snow project execute MY_PROJECT --version latest
+snow project execute MY_PROJECT_NAME --version latest
 ```
 
 ### 6. Add Project version
 
-If you have already prepared project files for a new PROJECT VERSION in one of your Snowflake STAGEs,
+If you have already prepared project files for a new PROJECT VERSION, either locally or have it already in one of your Snowflake STAGEs,
 and you want to create this VERSION, you can use the command below:
 
 ```bash
-snow project add-version <project_name> --from <stage_path>
+snow project add-version <project_name> [--from <stage_path>]
 ```
 
 example usage:
-
+If `--from` argument is skipped, new VERSION will be created from local files
 ```bash
-snow project add-version MY_PROJECT --from @MY_PROJECT_STAGE
+snow project add-version PROJECT_ENTITY_ID
+```
+
+And if `--from` is provided, new PROJECT VERSION will be created from referenced stage:
+```bash
+snow project add-version PROJECT_ENTITY_ID --from @MY_PROJECT_STAGE
 ```
 
 [manifest]: ./manifest.yml
