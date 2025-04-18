@@ -16,7 +16,7 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 <project_name> (6)
       ├── definitions (2)
       │   ├────── account_objects.sql
-      │   ├────── schema_definition.sql
+      │   ├────── databases_and_schemas.sql
       │   ├────── schema_objects.sql (3)
       │   └────── [...]
       ├── manifest.yml (1)
