@@ -1,8 +1,7 @@
 definition_version: 2
 entities:
-  project_entity_id:
+  <! name | to_snowflake_identifier !>:
     type: project
-    identifier: "<! name | to_snowflake_identifier !>"
     stage: "<! stage | to_snowflake_identifier !>"
     artifacts:
       - definitions/*
