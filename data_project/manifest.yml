@@ -4,5 +4,5 @@ include_definitions:
   - definitions/.*
 
 template_variables:
-  - base_db_name: "base_db"
-  - env: "dev"
+  - base_db_name: "BASE_DB"
+  - env: "DEV"
