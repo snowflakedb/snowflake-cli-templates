@@ -9,6 +9,6 @@ define role WAREHOUSE_MANAGER
     comment = 'This role is allowed to manage warehouses.';
 
 -- WAREHOUSES:
-define warehouse PARENT_TASK_WH warehouse_size='large';
+define warehouse PARENT_TASK_WH warehouse_size='Large';
 
-define warehouse CHILD_TASK_WH warehouse_size='small';
+define warehouse CHILD_TASK_WH warehouse_size='Small';

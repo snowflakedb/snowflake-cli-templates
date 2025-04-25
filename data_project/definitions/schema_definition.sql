@@ -1,11 +1,11 @@
 -- SCHEMAS:
-define schema {{ base_db_name }}_{{ env }}.tables
+define schema {{ base_db_name }}_{{ env }}.TABLES
     comment = 'This schema is dedicated to tables.';
 
-define schema {{ base_db_name }}_{{ env }}.views
+define schema {{ base_db_name }}_{{ env }}.VIEWS
     comment = 'This schema is dedicated to views.';
 
-define schema {{ base_db_name }}_{{ env }}.tasks
+define schema {{ base_db_name }}_{{ env }}.TASKS
     comment = 'This schema is dedicated to tasks.';
 
 -- DATABASES:
