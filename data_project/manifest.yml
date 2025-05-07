@@ -3,6 +3,7 @@ manifest_version: 1.0
 include_definitions:
   - definitions/.*
 
-template_variables:
-  - base_db_name: "BASE_DB"
-  - env: "DEV"
+configurations:
+  default:
+    base_db_name: "BASE_DB"
+    env: "DEV"
