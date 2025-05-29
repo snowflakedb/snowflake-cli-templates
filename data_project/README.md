@@ -25,9 +25,7 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 ```
 
 1. [manifest.yml][manifest] - is the file that defines:
-    * what files should be included in the version creation process. In the `include_definitions` list you can:
-      * include a specific file by passing its relative path to the root of the project, e.g. `definitions/account_objects.sql`
-      * include all files from a specific directory, e.g. `definitions/.*`
+    * what files should be included in the version creation process. In the `include_definitions` list, you can pass items that are Java regex patterns. The default value is `- definitions/.*`, meaning that all files in the `definitions` folder and its subfolders will be included.
     * list of configurations that allow users to use templating in definition files. Definition files (templates) are rendered as Jinja2 variables during the project execution process. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. [schema_objects.sql][schema_objects.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
