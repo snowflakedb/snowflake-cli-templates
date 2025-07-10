@@ -1,12 +1,12 @@
-# Data Project template
+# DCM Project template
 
 ## Introduction
 
-You can use this template as a starter project for a Snowflake Data Project.
+You can use this template as a starter DCM Project.
 
-Data Projects enable declarative infrastructure management, presenting a less error-prone paradigm
-that integrates better with Git than imperative approaches. Through automated change detection, Data
-Projects keep the Snowflake environment synchronized with the definitions files in version management.
+DCM Projects enable declarative infrastructure management, presenting a less error-prone paradigm
+that integrates better with Git than imperative approaches. Through automated change detection, DCM Projects
+keep the Snowflake environment synchronized with the definitions files in version management.
 These projects automatically create new objects, modify existing objects, and delete objects that are
 no longer needed, which supports CI/CD best practices when working with Snowflake environments.
 
@@ -29,11 +29,11 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
     * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is the case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its default value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. [schema_objects.sql][schema_objects.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
-4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake Data Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
+4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A DCM Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
     * `stage` - name of `STAGE` entity that stores project files in Snowflake.
-    * `artifacts` - list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
+    * `artifacts` - list of files and directories that make up the DCM Project. The Snowflake CLI will upload them to the stage when creating new project versions.
 5. [template.yml][template] - is the name of the template file Snowflake CLI uses to generate a new project.
-6. `<project_name>` - is the name of the directory that includes project Data Project artifacts.
+6. `<project_name>` - is the name of the directory that includes project artifacts.
 
 ### How to organize definition files structure
 
@@ -63,7 +63,7 @@ To include these files in new project versions, you must also modify `snowflake.
 definition_version: 2
 entities:
   example_project:
-    type: project
+    type: dcm
     stage: "my_project_stage"
     artifacts:
       - definitions/databases.sql
@@ -81,22 +81,22 @@ include_definitions:
   - definitions/.*
 ```
 
-## Working on Data Projects with Snowflake CLI
+## Working on DMC Projects with Snowflake CLI
 
-### 1. Initialize a Data Project from the template
+### 1. Initialize a DCM Project from the template
 
-To initialize a new Data Project from this template, execute the following command and provide the
-data required in command prompts. This command creates a new directory with Data Project files.
+To initialize a new DCM Project from this template, execute the following command and provide the
+data required in command prompts. This command creates a new directory with project files.
 Replace `<project_dir_name>` with the desired location for the project directory.
 
 ```bash
-snow init <project_dir_name> --template data_project
+snow init <project_dir_name> --template dcm_project
 ```
 
 example usage:
 
 ```bash
-snow init MY_PROJECT --template data_project
+snow init MY_PROJECT --template dcm_project
 ```
 
 ### 2. Define entities in `.sql` files
@@ -124,35 +124,35 @@ An example content of the definition file:
 ### 3. Create the Project
 
 After entity definitions included in definition files are ready to be applied to your infrastructure,
-you must create a `PROJECT` entity with a new `VERSION` from your local files. You can perform this
+you must create a `DCM PROJECT` entity with a new `VERSION` from your local files. You can perform this
 operation by executing the command below:
 
 ```bash
-snow project create
+snow dcm create
 ```
 
 This command will create a new `STAGE` if it doesn't already exist or use an existing one as a target
 of local files deployment, from which, the new `VERSION` will be created. The `STAGE` and the `PROJECT`
 will be created in the current sessions' database and schema or in these, which are specified in the
-flags of `snow` command. Name of the `PROJECT` can be specified in the [snowflake.yml][snowflake] file under
+flags of `snow` command. Name of the `DCM PROJECT` can be specified in the [snowflake.yml][snowflake] file under
 the `identifier` key (if not specified it's taken from `entity_id`) and `STAGE` name is specified under the `stage` key.
 
 You can also use this command for adding new versions, not only the initial one.
 
-### 4. Project dry-run [optional]
+### 4. DCM dry-run [optional]
 
 After creating a new PROJECT version, you can validate what changes will be applied to your Snowflake
 account with this command. This command will perform all the same validations and consistency checks
-like a regular `snow project execute`, but will not persist any changes to your Snowflake objects.
+like a regular `snow dcm execute`, but will not persist any changes to your Snowflake objects.
 
 ```bash
-snow project dry-run <project_identifier> --version <version_name>
+snow dcm dry-run <project_identifier> --version <version_name>
 ```
 
 example usage:
 
 ```bash
-snow project dry-run EXAMPLE_PROJECT --version latest
+snow dcm dry-run EXAMPLE_PROJECT --version latest
 ```
 
 ### 5. Execute Project
@@ -162,13 +162,13 @@ the PROJECT. It is recommended to first perform a dry-run with the changes.You c
 following command:
 
 ```bash
-snow project execute <project_identifier> --version <version_name>
+snow dcm execute <project_identifier> --version <version_name>
 ```
 
 example usage:
 
 ```bash
-snow project execute EXAMPLE_PROJECT --version latest
+snow dcm execute EXAMPLE_PROJECT --version latest
 ```
 
 ### 6. Add Project version
@@ -177,18 +177,18 @@ If you have already prepared project files for a new PROJECT VERSION, either loc
 and you want to create this VERSION, you can use the command below:
 
 ```bash
-snow project add-version <entity_id> [--from <stage_path>]
+snow dcm add-version <entity_id> [--from <stage_path>]
 ```
 
 example usage:
 If `--from` argument is skipped, new VERSION will be created from local files
 ```bash
-snow project add-version EXAMPLE_PROJECT
+snow dcm add-version EXAMPLE_PROJECT
 ```
 
 And if `--from` is provided, new PROJECT VERSION will be created from referenced stage:
 ```bash
-snow project add-version EXAMPLE_PROJECT --from @MY_PROJECT_STAGE
+snow dcm add-version EXAMPLE_PROJECT --from @MY_PROJECT_STAGE
 ```
 
 [manifest]: ./manifest.yml
