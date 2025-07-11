@@ -139,36 +139,36 @@ the `identifier` key (if not specified it's taken from `entity_id`) and `STAGE` 
 
 You can also use this command for adding new versions, not only the initial one.
 
-### 4. DCM dry-run [optional]
+### 4. DCM plan [optional]
 
 After creating a new PROJECT version, you can validate what changes will be applied to your Snowflake
 account with this command. This command will perform all the same validations and consistency checks
-like a regular `snow dcm execute`, but will not persist any changes to your Snowflake objects.
+like a regular `snow dcm deploy`, but will not persist any changes to your Snowflake objects.
 
 ```bash
-snow dcm dry-run <project_identifier> --version <version_name>
+snow dcm plan <project_identifier> --version <version_name>
 ```
 
 example usage:
 
 ```bash
-snow dcm dry-run EXAMPLE_PROJECT --version latest
+snow dcm plan EXAMPLE_PROJECT --version latest
 ```
 
-### 5. Execute Project
+### 5. Deploy Project
 
-In order to apply changes to your Snowflake account you need to execute the particular version of
-the PROJECT. It is recommended to first perform a dry-run with the changes.You can do this with the
+In order to apply changes to your Snowflake account you need to deploy the particular version of
+the PROJECT. It is recommended to first review a plan of the changes.You can deploy the changes with the
 following command:
 
 ```bash
-snow dcm execute <project_identifier> --version <version_name>
+snow dcm deploy <project_identifier> --version <version_name>
 ```
 
 example usage:
 
 ```bash
-snow dcm execute EXAMPLE_PROJECT --version latest
+snow dcm deploy EXAMPLE_PROJECT --version latest
 ```
 
 ### 6. Add Project version
