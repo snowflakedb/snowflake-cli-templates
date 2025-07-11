@@ -152,7 +152,7 @@ snow dcm plan <project_identifier> --version <version_name>
 example usage:
 
 ```bash
-snow dcm plan EXAMPLE_PROJECT --version latest
+snow dcm plan EXAMPLE_PROJECT --version default
 ```
 
 ### 5. Deploy Project
@@ -168,7 +168,7 @@ snow dcm deploy <project_identifier> --version <version_name>
 example usage:
 
 ```bash
-snow dcm deploy EXAMPLE_PROJECT --version latest
+snow dcm deploy EXAMPLE_PROJECT --version default
 ```
 
 ### 6. Add Project version
