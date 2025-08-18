@@ -81,7 +81,7 @@ include_definitions:
   - definitions/.*
 ```
 
-## Working on DMC Projects with Snowflake CLI
+## Working on DCM Projects with Snowflake CLI
 
 ### 1. Initialize a DCM Project from the template
 
