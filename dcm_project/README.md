@@ -1,11 +1,11 @@
-# Data Project template
+# DCM Project template
 
 ## Introduction
 
-You can use this template as a starter project for a Snowflake Data Project.
+You can use this template as a starter project for a Snowflake DCM Project.
 
-Data Projects enable declarative infrastructure management, presenting a less error-prone paradigm
-that integrates better with Git than imperative approaches. Through automated change detection, Data
+DCM Projects enable declarative infrastructure management, presenting a less error-prone paradigm
+that integrates better with Git than imperative approaches. Through automated change detection, DCM
 Projects keep the Snowflake environment synchronized with the definitions files in version management.
 These projects automatically create new objects, modify existing objects, and delete objects that are
 no longer needed, which supports CI/CD best practices when working with Snowflake environments.
@@ -29,9 +29,9 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
     * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is the case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its default value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. [raw.sql][raw.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
-4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake Data Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
+4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake DCM Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
     * `stage` - name of `STAGE` entity that stores project files in Snowflake.
-    * `artifacts` - list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
+    * `artifacts` - list of files and directories that make up the Snowflake DCM Project. The Snowflake CLI will upload them to the stage when creating new project versions.
 5`<project_name>` - is the repository project folder.
 
 ### How to organize definition files structure
@@ -78,12 +78,12 @@ include_definitions:
   - definitions/.*
 ```
 
-## Working on Data Projects with Snowflake CLI
+## Working on DCM Projects with Snowflake CLI
 
-### 1. Initialize a Data Project from the template
+### 1. Initialize a DCM Project from the template
 
-To initialize a new Data Project from this template, execute the following command and provide the
-data required in command prompts. This command creates a new directory with Data Project files.
+To initialize a new DCM Project from this template, execute the following command and provide the
+data required in command prompts. This command creates a new directory with DCM Project files.
 Replace `<project_dir_name>` with the desired location for the project directory.
 
 ```bash
