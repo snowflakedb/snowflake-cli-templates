@@ -87,13 +87,13 @@ data required in command prompts. This command creates a new directory with DCM 
 Replace `<project_dir_name>` with the desired location for the project directory.
 
 ```bash
-snow init <project_dir_name> --template data_project
+snow init <project_dir_name> --template dcm_project
 ```
 
 example usage:
 
 ```bash
-snow init MY_PROJECT --template data_project
+snow init MY_PROJECT --template dcm_project
 ```
 
 ### 2. Define entities in `.sql` files
