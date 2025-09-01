@@ -6,9 +6,10 @@ You can use this template as a starter project for a Snowflake DCM Project.
 
 DCM Projects enable declarative infrastructure management, presenting a less error-prone paradigm
 that integrates better with Git than imperative approaches. Through automated change detection, DCM
-Projects keep the Snowflake environment synchronized with the definitions files in version management.
-These projects automatically create new objects, modify existing objects, and delete objects that are
-no longer needed, which supports CI/CD best practices when working with Snowflake environments.
+Projects keep the Snowflake environment synchronized with the definitions files from different supported
+sources(SnowGIT repositories, Workspaces, Stages). These projects automatically create new objects,
+modify existing objects, and delete objects that are no longer needed, which supports CI/CD best
+practices when working with Snowflake environments.
 
 ## Directory Structure
 
@@ -31,7 +32,7 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 3. [raw.sql][raw.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
 4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake DCM Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
     * `stage` - name of `STAGE` entity that stores project files in Snowflake.
-    * `artifacts` - list of files and directories that make up the Snowflake DCM Project. The Snowflake CLI will upload them to the stage when creating new project versions.
+    * `artifacts` - list of files and directories that make up the Snowflake DCM Project. The Snowflake CLI will upload them to the stage when Planning or Deploying.
 5`<project_name>` - is the repository project folder.
 
 ### How to organize definition files structure
@@ -56,7 +57,7 @@ example uses a more complex file structure:
       └── snowflake.yml
 ```
 
-To include these files in new project versions, you must also modify `snowflake.yaml`, as shown:
+To include these files for Plan or Deploy process, you must also modify `snowflake.yaml`, as shown:
 
 ```yaml
 definition_version: 2
@@ -100,8 +101,8 @@ snow init MY_PROJECT --template dcm_project
 
 In this step, you define the entities you want the project to manage. You can define these entities
 in the prepared `definitions/*.sql` files, but you can also create your own files. If you
-decide to add more `.sql` files, make sure that they will be included in the process of creating a new
-project version by adding their paths to `include_definitions` list in the [manifest.yaml][manifest] file.
+decide to add more `.sql` files, make sure that they will be included in the project execution process
+by adding their paths to `include_definitions` list in the [manifest.yaml][manifest] file.
 
 An example content of the definition file:
 ```sql
@@ -140,13 +141,13 @@ account with this command. This command will perform all the same validations an
 like a regular `snow project execute`, but will not persist any changes to your Snowflake objects.
 
 ```bash
-snow dcm plan <project_identifier> --version <version_name>
+snow dcm plan <project_identifier> --from <source_stage_name> --configuration <config_name>
 ```
 
 example usage:
 
 ```bash
-snow dcm plan EXAMPLE_PROJECT --version default
+snow dcm plan EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE" --configuration "PROD"
 ```
 
 ### 5. Deploy Project
@@ -156,17 +157,16 @@ the PROJECT. It is recommended to first review a plan of the changes.You can dep
 with the following command:
 
 ```bash
-snow dcm deploy <project_identifier> --version <version_name>
+snow dcm deploy <project_identifier> --from <source_stage_name> --configuration <config_name>
 ```
 
 example usage:
 
 ```bash
-snow dcm deploy EXAMPLE_PROJECT --version default
+snow dcm deploy EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE" --configuration "DEV"
 ```
 
 [manifest]: ./manifest.yml
 [snowflake]: ./snowflake.yml
-[schema_objects.sql]: ./definitions/schema_objects.sql
 [raw.sql]: ./definitions/raw.sql
 [template]: ./template.yml
