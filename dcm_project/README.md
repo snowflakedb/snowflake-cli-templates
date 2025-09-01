@@ -13,27 +13,26 @@ no longer needed, which supports CI/CD best practices when working with Snowflak
 ## Directory Structure
 
 ```
-<project_name> (6)
+<project_name> (5)
       ├── definitions (2)
-      │   ├────── account_objects.sql
-      │   ├────── schema_definition.sql
-      │   ├────── schema_objects.sql (3)
+      │   ├────── access.sql
+      │   ├────── ingest.sql
+      │   ├────── raw.sql (3)
+      │   ├────── serve.sql
       │   └────── [...]
       ├── manifest.yml (1)
-      ├── snowflake.yml (4)
-      └── template.yml (5)
+      └── snowflake.yml (4)
 ```
 
 1. [manifest.yml][manifest] - is the file that defines:
-    * what files should be included in the version creation process. In the `include_definitions` list, you can pass items that are Java regex patterns. The default value is `- definitions/.*`, meaning that all files in the `definitions` folder and its subfolders will be included.
+    * what files should be included in the project definition. In the `include_definitions` list, you can pass items that are Java regex patterns. The default value is `- definitions/.*`, meaning that all files in the `definitions` folder and its subfolders will be included.
     * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is the case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its default value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
-3. [schema_objects.sql][schema_objects.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
+3. [raw.sql][raw.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
 4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake Data Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
     * `stage` - name of `STAGE` entity that stores project files in Snowflake.
     * `artifacts` - list of files and directories that make up the Snowflake Data Project. The Snowflake CLI will upload them to the stage when creating new project versions.
-5. [template.yml][template] - is the name of the template file Snowflake CLI uses to generate a new project.
-6. `<project_name>` - is the name of the directory that includes project Data Project artifacts.
+5`<project_name>` - is the repository project folder.
 
 ### How to organize definition files structure
 
@@ -44,15 +43,15 @@ files divided into different directories, such as single file per single object 
 example uses a more complex file structure:
 
 ```
-<project_name>
+<repo-project-folder>
       ├── definitions
-      │   ├────── databases.sql
-      │   ├────── schemas.sql
-      │   ├────── roles.sql
-      │   └────── objects
-      │           ├────── tables.sql
-      │           ├────── views.sql
-      │           └────── tasks.sql
+      │   ├────── wh_db_roles.sql
+      │   ├────── load
+      │   ├────── transform
+      │   └────── serve
+      │           ├────── dashboard_views.sql
+      │           ├────── annual_agg.sql
+      │           └────── team_metrics.sql
       ├── manifest.yml
       └── snowflake.yml
 ```
@@ -62,14 +61,12 @@ To include these files in new project versions, you must also modify `snowflake.
 ```yaml
 definition_version: 2
 entities:
-  example_project:
-    type: project
-    stage: "my_project_stage"
-    artifacts:
-      - definitions/databases.sql
-      - definitions/schemas.sql
-      - definitions/roles.sql
-      - definitions/objects/*
+   example_project:
+      type: dcm
+      stage: "my_project_stage"
+      artifacts:
+         - definitions/wh_db_roles.sql
+         - definitions/load/*
 ```
 
 You must include all files from the `definitions` directory in the `manifest.yaml` file:
@@ -124,74 +121,52 @@ An example content of the definition file:
 ### 3. Create the Project
 
 After entity definitions included in definition files are ready to be applied to your infrastructure,
-you must create a `PROJECT` entity with a new `VERSION` from your local files. You can perform this
-operation by executing the command below:
+you must create a `DCM PROJECT`. You can perform this operation by executing the command below:
 
 ```bash
 snow project create
 ```
 
 This command will create a new `STAGE` if it doesn't already exist or use an existing one as a target
-of local files deployment, from which, the new `VERSION` will be created. The `STAGE` and the `PROJECT`
-will be created in the current sessions' database and schema or in these, which are specified in the
-flags of `snow` command. Name of the `PROJECT` can be specified in the [snowflake.yml][snowflake] file under
-the `identifier` key (if not specified it's taken from `entity_id`) and `STAGE` name is specified under the `stage` key.
+of local files deployment. The `STAGE` and the `PROJECT`will be created in the current sessions'
+database and schema or in these, which are specified in the flags of `snow` command. Name of the
+`PROJECT` can be specified in the [snowflake.yml][snowflake] file under the `identifier` key
+(if not specified it's taken from `entity_id`) and `STAGE` name is specified under the `stage` key.
 
-You can also use this command for adding new versions, not only the initial one.
+### 4. DCM Plan
 
-### 4. Project dry-run [optional]
-
-After creating a new PROJECT version, you can validate what changes will be applied to your Snowflake
+After creating a new `DCM PROJECT`, you can validate what changes will be applied to your Snowflake
 account with this command. This command will perform all the same validations and consistency checks
 like a regular `snow project execute`, but will not persist any changes to your Snowflake objects.
 
 ```bash
-snow project dry-run <project_identifier> --version <version_name>
+snow dcm plan <project_identifier> --version <version_name>
 ```
 
 example usage:
 
 ```bash
-snow project dry-run EXAMPLE_PROJECT --version latest
+snow dcm plan EXAMPLE_PROJECT --version default
 ```
 
-### 5. Execute Project
+### 5. Deploy Project
 
-In order to apply changes to your Snowflake account you need to execute the particular version of
-the PROJECT. It is recommended to first perform a dry-run with the changes.You can do this with the
-following command:
-
-```bash
-snow project execute <project_identifier> --version <version_name>
-```
-
-example usage:
+In order to apply changes to your Snowflake account you need to execute the current definition
+the PROJECT. It is recommended to first review a plan of the changes.You can deploy the changes
+with the following command:
 
 ```bash
-snow project execute EXAMPLE_PROJECT --version latest
-```
-
-### 6. Add Project version
-
-If you have already prepared project files for a new PROJECT VERSION, either locally or have it already in one of your Snowflake STAGEs,
-and you want to create this VERSION, you can use the command below:
-
-```bash
-snow project add-version <entity_id> [--from <stage_path>]
+snow dcm deploy <project_identifier> --version <version_name>
 ```
 
 example usage:
-If `--from` argument is skipped, new VERSION will be created from local files
-```bash
-snow project add-version EXAMPLE_PROJECT
-```
 
-And if `--from` is provided, new PROJECT VERSION will be created from referenced stage:
 ```bash
-snow project add-version EXAMPLE_PROJECT --from @MY_PROJECT_STAGE
+snow dcm deploy EXAMPLE_PROJECT --version default
 ```
 
 [manifest]: ./manifest.yml
 [snowflake]: ./snowflake.yml
 [schema_objects.sql]: ./definitions/schema_objects.sql
+[raw.sql]: ./definitions/raw.sql
 [template]: ./template.yml

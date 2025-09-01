@@ -4,6 +4,14 @@ include_definitions:
   - definitions/.*
 
 configurations:
-  default:
-    base_db_name: "BASE_DB"
-    env: "DEV"
+  DEV:
+    db: "DEV"
+    wh_size: "X-SMALL"
+    role: "DEV"
+    scope: "TEST"
+
+  PROD:
+    db: "PROD"
+    wh_size: "LARGE"
+    role: "PROD"
+    scope: "ALL"
