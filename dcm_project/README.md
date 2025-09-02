@@ -138,7 +138,7 @@ database and schema or in these, which are specified in the flags of `snow` comm
 
 After creating a new `DCM PROJECT`, you can validate what changes will be applied to your Snowflake
 account with this command. This command will perform all the same validations and consistency checks
-like a regular `snow project execute`, but will not persist any changes to your Snowflake objects.
+like a regular `snow project execute`, but will not persist any changes to your Snowflake account objects.
 
 ```bash
 snow dcm plan <project_identifier> --from <source_stage_name> --configuration <config_name>
