@@ -14,15 +14,14 @@ practices when working with Snowflake environments.
 ## Directory Structure
 
 ```
-<project_name> (5)
+<project_name> (4)
       ├── definitions (2)
       │   ├────── access.sql
       │   ├────── ingest.sql
       │   ├────── raw.sql (3)
       │   ├────── serve.sql
       │   └────── [...]
-      ├── manifest.yml (1)
-      └── snowflake.yml (4)
+      └── manifest.yml (1)
 ```
 
 1. [manifest.yml][manifest] - is the file that defines:
@@ -30,10 +29,7 @@ practices when working with Snowflake environments.
     * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. [raw.sql][raw.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
-4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake DCM Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
-    * `stage` - name of `STAGE` entity that stores project files in Snowflake.
-    * `artifacts` - list of files and directories that make up the Snowflake DCM Project. The Snowflake CLI will upload them to the stage when Planning or Deploying.
-5`<project_name>` - is the repository project folder.
+4. `<project_name>` - is the repository project folder.
 
 ### How to organize definition files structure
 
@@ -53,21 +49,7 @@ example uses a more complex file structure:
       │           ├────── dashboard_views.sql
       │           ├────── annual_agg.sql
       │           └────── team_metrics.sql
-      ├── manifest.yml
-      └── snowflake.yml
-```
-
-To include these files for Plan or Deploy process, you must also modify `snowflake.yaml`, as shown:
-
-```yaml
-definition_version: 2
-entities:
-   example_project:
-      type: dcm
-      stage: "my_project_stage"
-      artifacts:
-         - definitions/wh_db_roles.sql
-         - definitions/load/*
+      └── manifest.yml
 ```
 
 You must include all files from the `definitions` directory in the `manifest.yaml` file:
@@ -125,14 +107,11 @@ After entity definitions included in definition files are ready to be applied to
 you must create a DCM Project. You can perform this operation by executing the command below:
 
 ```bash
-snow dcm create
+snow dcm create EXAMPLE_PROJECT
 ```
 
-This command will create a new `STAGE` if it doesn't already exist or use an existing one as a target
-of local files deployment. The `STAGE` and the DCM Project will be created in the current sessions'
-database and schema or in these, which are specified in the flags of `snow` command. Name of the
-DCM Project object can be specified in the [snowflake.yml][snowflake] file under the `identifier` key
-(if not specified it's taken from `entity_id`) and `STAGE` name is specified under the `stage` key.
+The DCM Project will be created in the current sessions'
+database and schema or in these, which are specified in the flags of `snow` command. 
 
 ### 4. DCM Plan
 
@@ -158,7 +137,7 @@ a [USER STAGE][stages_docs], you can specify the source storage with `--from` op
 would like to use the project files for DCM Project `PLAN` commands.
 
 ```bash
-snow dcm plan <project_identifier> --from <source_stage_name> --configuration <config_name>
+snow dcm plan <project_name> --from <source_stage_name> --configuration <config_name>
 ```
 
 example usage:
@@ -174,7 +153,7 @@ the DCM Project. It is recommended to first review a plan of the changes. You ca
 with the following command:
 
 ```bash
-snow dcm deploy <project_identifier> --configuration <config_name>
+snow dcm deploy <project_name> --configuration <config_name>
 ```
 
 example usage:
@@ -191,17 +170,16 @@ a [USER STAGE][stages_docs], you can specify the source storage with `--from` op
 would like to use the project files for DCM Project `DEPLOY` command.
 
 ```bash
-snow dcm deploy <project_identifier> --from <source_stage_name> --configuration <config_name>
+snow dcm deploy <project_name> --from <source_stage_name> --configuration <config_name>
 ```
 
 example usage:
 
 ```bash
-snow dcm depoly EXAMPLE_PROJECT --from "@DB.SCH.SOURCE_STAGE/dcm_project" --configuration "PROD"
+snow dcm deploy EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE/dcm_project" --configuration "PROD"
 ```
 
 [manifest]: ./manifest.yml
-[snowflake]: ./snowflake.yml
 [raw.sql]: ./definitions/raw.sql
 [template]: ./template.yml
 [workspaces_docs]: https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces
