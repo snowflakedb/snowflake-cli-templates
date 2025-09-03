@@ -7,7 +7,7 @@ You can use this template as a starter project for a Snowflake DCM Project.
 DCM Projects enable declarative infrastructure management, presenting a less error-prone paradigm
 that integrates better with Git than imperative approaches. Through automated change detection, DCM
 Projects keep the Snowflake environment synchronized with the definitions files from different supported
-sources(SnowGIT repositories, Workspaces, Stages). These projects automatically create new objects,
+sources(SnowGIT repositories, Workspaces, Stages). These DCM Projects automatically create new objects,
 modify existing objects, and delete objects that are no longer needed, which supports CI/CD best
 practices when working with Snowflake environments.
 
@@ -99,9 +99,9 @@ snow init MY_PROJECT --template dcm_project
 
 ### 2. Define entities in `.sql` files
 
-In this step, you define the entities you want the project to manage. You can define these entities
+In this step, you define the entities you want the DCM Project to manage. You can define these entities
 in the prepared `definitions/*.sql` files, but you can also create your own files. If you
-decide to add more `.sql` files, make sure that they will be included in the project execution process
+decide to add more `.sql` files, make sure that they will be included in the DCM Project execution process
 by adding their paths to `include_definitions` list in the [manifest.yaml][manifest] file.
 
 An example content of the definition file:
@@ -119,7 +119,7 @@ An example content of the definition file:
     DEFINE TABLE db2.sch2.tb2 (col_3 integer, col_4 varchar);
 ```
 
-### 3. Create the Project
+### 3. Create the DCM Project
 
 After entity definitions included in definition files are ready to be applied to your infrastructure,
 you must create a `DCM PROJECT`. You can perform this operation by executing the command below:
@@ -129,9 +129,9 @@ snow dcm create
 ```
 
 This command will create a new `STAGE` if it doesn't already exist or use an existing one as a target
-of local files deployment. The `STAGE` and the `PROJECT`will be created in the current sessions'
+of local files deployment. The `STAGE` and the `DCM PROJECT`will be created in the current sessions'
 database and schema or in these, which are specified in the flags of `snow` command. Name of the
-`PROJECT` can be specified in the [snowflake.yml][snowflake] file under the `identifier` key
+`DCM PROJECT` object can be specified in the [snowflake.yml][snowflake] file under the `identifier` key
 (if not specified it's taken from `entity_id`) and `STAGE` name is specified under the `stage` key.
 
 ### 4. DCM Plan
@@ -150,10 +150,10 @@ example usage:
 snow dcm plan EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE" --configuration "PROD"
 ```
 
-### 5. Deploy Project
+### 5. Deploy DCM Project
 
-In order to apply changes to your Snowflake account you need to execute the current definition
-the PROJECT. It is recommended to first review a plan of the changes.You can deploy the changes
+In order to apply changes to your Snowflake account you need to deploy the current definition
+the DCM Project. It is recommended to first review a plan of the changes.You can deploy the changes
 with the following command:
 
 ```bash
