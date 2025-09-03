@@ -6,8 +6,8 @@ You can use this template as a starter project for a Snowflake DCM Project.
 
 DCM Projects enable declarative infrastructure management, presenting a less error-prone paradigm
 that integrates better with Git than imperative approaches. Through automated change detection, DCM
-Projects keep the Snowflake environment synchronized with the definitions files from different supported
-sources(SnowGIT repositories, Workspaces, Stages). These DCM Projects automatically create new objects,
+Projects keep the Snowflake environment synchronized with the definition files from different supported
+sources (SnowGIT repositories, Workspaces, Stages). DCM Projects automatically create new objects,
 modify existing objects, and delete objects that are no longer needed, which supports CI/CD best
 practices when working with Snowflake environments.
 
@@ -27,7 +27,7 @@ practices when working with Snowflake environments.
 
 1. [manifest.yml][manifest] - is the file that defines:
     * what files should be included in the project definition. In the `include_definitions` list, you can pass items that are Java regex patterns. The default value is `- definitions/.*`, meaning that all files in the `definitions` folder and its subfolders will be included.
-    * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is the case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its default value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
+    * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
 2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. [raw.sql][raw.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
 4. [snowflake.yml][snowflake] - is the Snowflake CLI project definition file for the project. A Snowflake DCM Project minimally requires the following parameters in the [snowflake.yml][snowflake] file:
@@ -40,7 +40,7 @@ practices when working with Snowflake environments.
 Once you initialize a project from the template, you create the definitions that will set up your
 account. The template doesn't impose any file structure of definition files, but keep in mind that you
 don't need to keep all definition statements in a single file. You can organize the code in multiple
-files divided into different directories, such as single file per single object type. The following
+files divided into different directories, such as single object type per file. The following
 example uses a more complex file structure:
 
 ```
@@ -85,7 +85,7 @@ include_definitions:
 
 To initialize a new DCM Project from this template, execute the following command and provide the
 data required in command prompts. This command creates a new directory with DCM Project files.
-Replace `<project_dir_name>` with the desired location for the project directory.
+Replace `<project_dir_name>` with the desired name for the project directory.
 
 ```bash
 snow init <project_dir_name> --template dcm_project
@@ -122,24 +122,23 @@ An example content of the definition file:
 ### 3. Create the DCM Project
 
 After entity definitions included in definition files are ready to be applied to your infrastructure,
-you must create a `DCM PROJECT`. You can perform this operation by executing the command below:
+you must create a DCM Project. You can perform this operation by executing the command below:
 
 ```bash
 snow dcm create
 ```
 
 This command will create a new `STAGE` if it doesn't already exist or use an existing one as a target
-of local files deployment. The `STAGE` and the `DCM PROJECT`will be created in the current sessions'
+of local files deployment. The `STAGE` and the DCM Project will be created in the current sessions'
 database and schema or in these, which are specified in the flags of `snow` command. Name of the
-`DCM PROJECT` object can be specified in the [snowflake.yml][snowflake] file under the `identifier` key
+DCM Project object can be specified in the [snowflake.yml][snowflake] file under the `identifier` key
 (if not specified it's taken from `entity_id`) and `STAGE` name is specified under the `stage` key.
 
 ### 4. DCM Plan
 
-After creating a new `DCM PROJECT`, you can validate what changes will be applied to your Snowflake
-account with this command. This command will perform all the same validations and consistency checks
-like a regular `snow dcm execute`, but will not persist any changes to your Snowflake account objects.
-Before executing the command, you need to make sure that all project files are stored in any of
+After creating a new DCM Project, you can validate what changes will be applied to your Snowflake
+account with this command. It will perform all the same validations and consistency checks
+like a regular `snow dcm deploy`, but will not persist any changes to your Snowflake account objects.
 
 ```bash
 snow dcm plan <project_identifier> --configuration <config_name>
@@ -171,7 +170,7 @@ snow dcm plan EXAMPLE_PROJECT --from "@DB.SCH.SOURCE_STAGE/dcm_project" --config
 ### 5. Deploy DCM Project
 
 In order to apply changes to your Snowflake account you need to deploy the current definition
-the DCM Project. It is recommended to first review a plan of the changes.You can deploy the changes
+the DCM Project. It is recommended to first review a plan of the changes. You can deploy the changes
 with the following command:
 
 ```bash
