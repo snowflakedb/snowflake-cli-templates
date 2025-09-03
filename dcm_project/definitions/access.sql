@@ -11,15 +11,15 @@ grant role DCM_PROJECT_{{role}}_READ to user JSOMMERFELD;   -- replace with your
 
 grant USAGE on database DCM_PROJECT_{{db}}         to role DCM_PROJECT_{{role}}_READ;
 
-grant USAGE on schema DCM_PROJECT_{{db}}.RAW       to role DCM_PROJECT_{{role}}_READ;
-grant USAGE on schema DCM_PROJECT_{{db}}.ANALYTICS to role DCM_PROJECT_{{role}}_READ;
-grant USAGE on schema DCM_PROJECT_{{db}}.SERVE     to role DCM_PROJECT_{{role}}_READ;
-grant USAGE on warehouse DCM_PROJECT_WH_{{db}}     to role DCM_PROJECT_{{role}}_READ;
+grant usage on schema DCM_PROJECT_{{db}}.RAW       to role DCM_PROJECT_{{role}}_READ;
+grant usage on schema DCM_PROJECT_{{db}}.ANALYTICS to role DCM_PROJECT_{{role}}_READ;
+grant usage on schema DCM_PROJECT_{{db}}.SERVE     to role DCM_PROJECT_{{role}}_READ;
+grant usage on warehouse DCM_PROJECT_WH_{{db}}     to role DCM_PROJECT_{{role}}_READ;
 
 
-grant SELECT on ALL tables in database DCM_PROJECT_{{db}}    to role DCM_PROJECT_{{role}}_READ;
+grant select on all tables in database DCM_PROJECT_{{db}}    to role DCM_PROJECT_{{role}}_READ;
 
 --grant SELECT on ALL dynamic tables in database DCM_PROJECT_{{db}}    to role DCM_PROJECT_{{role}}_READ;
 -- //awaiting bug fix to roll out
 
-grant SELECT on ALL views in database DCM_PROJECT_{{db}}    to role DCM_PROJECT_{{role}}_READ;
+grant select on all views in database DCM_PROJECT_{{db}}    to role DCM_PROJECT_{{role}}_READ;

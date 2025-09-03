@@ -3,14 +3,14 @@ define stage DCM_PROJECT_{{db}}.RAW.TASTY_BYTES_ORDERS_STAGE
 
 
 define table DCM_PROJECT_{{db}}.RAW.DAILY_ORDERS_INCOMING (
-    ORDER_ID NUMBER,
-    CUSTOMER_ID NUMBER,
-    TRUCK_ID NUMBER,
+    ORDER_ID number,
+    CUSTOMER_ID number,
+    TRUCK_ID number,
     ORDER_TS TIMESTAMP_NTZ,
-    MENU_ITEM_ID NUMBER,
-    QUANTITY NUMBER
+    MENU_ITEM_ID number,
+    QUANTITY number
 )
-change_tracking = TRUE
+change_tracking = true
 ;
 
 
@@ -26,14 +26,14 @@ begin
     from
         @DCM_PROJECT_{{db}}.RAW.TASTY_BYTES_ORDERS_STAGE
     file_format = (
-        TYPE = 'CSV',
-        FIELD_DELIMITER = ',',
-        SKIP_HEADER = 1,
-        NULL_IF = ('NULL', 'null'),
-        EMPTY_FIELD_AS_NULL = true,
-        FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+        type = 'CSV',
+        field_delimiter = ',',
+        skip_header = 1,
+        null_if = ('NULL', 'null'),
+        empty_field_as_null = true,
+        field_optionally_enclosed_by = '"'
     )
-    ON_ERROR = 'CONTINUE';
+    on_error = 'CONTINUE';
 
     -- Insert new order headers, avoiding duplicates
     insert into
