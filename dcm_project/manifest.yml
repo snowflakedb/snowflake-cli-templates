@@ -2,6 +2,7 @@ manifest_version: 1.0
 
 include_definitions:
   - definitions/.*
+  - new_dt_definitions/.*
 
 configurations:
   DEV:
