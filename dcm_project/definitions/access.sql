@@ -6,7 +6,7 @@ with
 ;
 
 define role DCM_PROJECT_{{role}}_READ;
-grant role DCM_PROJECT_{{role}}_READ to user JSOMMERFELD;   -- replace with your user
+grant role DCM_PROJECT_{{role}}_READ to user <! username !>;
 
 
 grant USAGE on database DCM_PROJECT_{{db}}         to role DCM_PROJECT_{{role}}_READ;
