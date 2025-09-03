@@ -139,6 +139,24 @@ database and schema or in these, which are specified in the flags of `snow` comm
 After creating a new `DCM PROJECT`, you can validate what changes will be applied to your Snowflake
 account with this command. This command will perform all the same validations and consistency checks
 like a regular `snow dcm execute`, but will not persist any changes to your Snowflake account objects.
+Before executing the command, you need to make sure that all project files are stored in any of
+
+```bash
+snow dcm plan <project_identifier> --configuration <config_name>
+```
+
+example usage:
+
+```bash
+snow dcm plan EXAMPLE_PROJECT --configuration "PROD"
+```
+
+#### DCM Plan from prepared project files in Snowflake storage
+
+Alternatively if you synchronize your project files with a [SNOWGIT REPOSITORY][snowgit_docs], develop
+the DCM Project with [a WORKSPACE][workspaces_docs], or simply you have your project files prepared in
+a [USER STAGE][stages_docs], you can specify the source storage with `--from` option, from which you
+would like to use the project files for DCM Project `PLAN` commands.
 
 ```bash
 snow dcm plan <project_identifier> --from <source_stage_name> --configuration <config_name>
@@ -147,7 +165,7 @@ snow dcm plan <project_identifier> --from <source_stage_name> --configuration <c
 example usage:
 
 ```bash
-snow dcm plan EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE" --configuration "PROD"
+snow dcm plan EXAMPLE_PROJECT --from "@DB.SCH.SOURCE_STAGE/dcm_project" --configuration "PROD"
 ```
 
 ### 5. Deploy DCM Project
@@ -157,16 +175,36 @@ the DCM Project. It is recommended to first review a plan of the changes.You can
 with the following command:
 
 ```bash
+snow dcm deploy <project_identifier> --configuration <config_name>
+```
+
+example usage:
+
+```bash
+snow dcm deploy EXAMPLE_PROJECT --configuration "DEV"
+```
+
+#### DCM Deploy from prepared project files in Snowflake storage
+
+Alternatively if you synchronize your project files with a [SNOWGIT REPOSITORY][snowgit_docs], develop
+the DCM Project with [a WORKSPACE][workspaces_docs], or simply you have your project files prepared in
+a [USER STAGE][stages_docs], you can specify the source storage with `--from` option, from which you
+would like to use the project files for DCM Project `DEPLOY` command.
+
+```bash
 snow dcm deploy <project_identifier> --from <source_stage_name> --configuration <config_name>
 ```
 
 example usage:
 
 ```bash
-snow dcm deploy EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE" --configuration "DEV"
+snow dcm depoly EXAMPLE_PROJECT --from "@DB.SCH.SOURCE_STAGE/dcm_project" --configuration "PROD"
 ```
 
 [manifest]: ./manifest.yml
 [snowflake]: ./snowflake.yml
 [raw.sql]: ./definitions/raw.sql
 [template]: ./template.yml
+[workspaces_docs]: https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces
+[stages_docs]: https://docs.snowflake.com/en/user-guide/data-load-local-file-system-create-stage
+[snowgit_docs]: https://docs.snowflake.com/en/developer-guide/git/git-overview
