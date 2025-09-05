@@ -1,5 +1,7 @@
 manifest_version: 1.0
 
+type: dcm_project
+
 include_definitions:
   - definitions/.*
 
