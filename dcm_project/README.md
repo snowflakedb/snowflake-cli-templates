@@ -111,7 +111,7 @@ snow dcm create EXAMPLE_PROJECT
 ```
 
 The DCM Project will be created in the current sessions'
-database and schema or in these, which are specified in the flags of `snow` command. 
+database and schema or in these, which are specified in the flags of `snow` command.
 
 ### 4. DCM Plan
 
