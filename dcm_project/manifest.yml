@@ -1,0 +1,17 @@
+manifest_version: 1.0
+
+include_definitions:
+  - definitions/.*
+
+configurations:
+  DEV:
+    db: "DEV"
+    wh_size: "X-SMALL"
+    role: "DEV"
+    scope: "TEST"
+
+  PROD:
+    db: "PROD"
+    wh_size: "LARGE"
+    role: "PROD"
+    scope: "ALL"
