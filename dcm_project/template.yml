@@ -1,16 +1,7 @@
-minimum_cli_version: "3.0.0"
+minimum_cli_version: "3.12.0"
 files_to_render:
-  - snowflake.yml
   - definitions/access.sql
 variables:
-  - name: name
-    default: my_project_name
-    prompt: "Name of the PROJECT object to be created in Snowflake. Default: "
-    type: string
-  - name: stage
-    default: my_project_stage
-    prompt: "Target STAGE to where project files should be deployed. Default: "
-    type: string
   - name: username
     prompt: "User with read role"
     type: string
