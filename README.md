@@ -15,7 +15,7 @@ If you want to report as issue or request a new feature, please do so in
 Check the
 [documentation](https://docs.snowflake.com/en/developer-guide/snowflake-cli-v2/bootstrap-project/bootstrap#label-cli-project-templating-custom-templates)
 on how to create a custom project template. You can use `snow init` command of
-[Snowflake CLI](https://github.com/snowflakedb/snowflake-cli) for testing.
+[Snowflake CLI](https://github.com/snowflakedb/snowflake-cli) for testings.
 
 If you want to request your template to be added to this repository, please
 create an issue in [Snowflake CLI project repository](https://github.com/snowflakedb/snowflake-cli/issues) with a link to
