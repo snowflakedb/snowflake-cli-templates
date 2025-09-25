@@ -29,6 +29,7 @@ def initialize_project():
                     "--template-source",
                     str(_REPO_ROOT),
                     "--no-interactive",
+                    "--debug"
                 ],
                 encoding="utf-8",
             )
