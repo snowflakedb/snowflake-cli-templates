@@ -26,9 +26,9 @@ def initialize_project():
                     str(project_dir),
                     "--template",
                     template_name,
-                    "--no-interactive",
                     "--template-source",
-                    _REPO_ROOT,
+                    str(_REPO_ROOT),
+                    "--no-interactive",
                 ],
                 encoding="utf-8",
             )
