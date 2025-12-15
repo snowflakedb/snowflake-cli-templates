@@ -15,7 +15,6 @@ entities:
     pages_dir: app_pages
     artifacts:
       - pyproject.toml
-      - uv.lock
       - streamlit_app.py
       - common/*.py
       - README.md
