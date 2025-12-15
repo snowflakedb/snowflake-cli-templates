@@ -8,9 +8,15 @@ variables:
   - name: name
     default: my_streamlit_app
     prompt: "What is the name of the streamlit app object in Snowflake? e.g. 'my_streamlit_app'"
-  - name: stage
-    default: my_streamlit_stage
-    prompt: "What stage should the app be deployed to?"
+  - name: database
+    default: my_database
+    prompt: "What database should the app be deployed to?"
+  - name: schema
+    default: my_schema
+    prompt: "What schema should the app be deployed to?"
   - name: query_warehouse
     default: my_streamlit_warehouse
     prompt: "On which warehouse SQL queries issued by the application are run"
+  - name: compute_pool
+    default: my_compute_pool
+    prompt: "What compute pool should the app use?"
