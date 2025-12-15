@@ -1,0 +1,12 @@
+[project]
+name = "APP_NAME"
+version = "0.1.0"
+description = "APP_DESCRIPTION"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit>=1.50.0",
+    "snowflake-snowpark-python[pandas]>=1.29.0",
+    "snowflake-telemetry-python>=0.7.1",
+    "snowflake-connector-python[secure-local-storage]>=3.14.1",
+    "plotly"
+]

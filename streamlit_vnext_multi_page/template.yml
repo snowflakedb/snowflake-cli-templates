@@ -1,0 +1,16 @@
+minimum_cli_version: "3.12.0"
+files_to_render:
+  - snowflake.yml
+variables:
+  - name: title
+    default: My Streamlit App
+    prompt: "Title of the streamlit app e.g. 'My Streamlit App'"
+  - name: name
+    default: my_streamlit_app
+    prompt: "What is the name of the streamlit app object in Snowflake? e.g. 'my_streamlit_app'"
+  - name: stage
+    default: my_streamlit_stage
+    prompt: "What stage should the app be deployed to?"
+  - name: query_warehouse
+    default: my_streamlit_warehouse
+    prompt: "On which warehouse SQL queries issued by the application are run"
