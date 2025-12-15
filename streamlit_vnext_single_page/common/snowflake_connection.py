@@ -1,31 +1,18 @@
+from typing import Any, Sequence
+
+import pandas as pd
 import streamlit as st
 from snowflake.snowpark import Session
-from typing import Any, Sequence
-import pandas as pd
 
+# This is the duration for which query results are cached (= 1 hour).
+# You can set it to None to disable caching.
 CACHE_TTL = "1h"
 
 
 def get_session() -> Session:
-    """Return a Snowpark Session.
-
-    Tries local Streamlit connection (with secrets) first. If unavailable,
-    falls back to `get_active_session()` for Streamlit-in-Snowflake.
-    """
-    # Try local dev with Streamlit secrets
-    try:
-        conn = st.connection("snowflake", type="snowflake")
-        return conn.session()
-    except Exception:
-        pass
-
-    # Fallback: hosted Streamlit-in-Snowflake active session
-    try:
-        from snowflake.snowpark.context import get_active_session
-
-        return get_active_session()
-    except Exception as exc:
-        raise RuntimeError("Could not obtain a Snowflake session.") from exc
+    """Return a Snowpark Session."""
+    conn = st.connection("snowflake", type="snowflake")
+    return conn.session()
 
 
 @st.cache_data(ttl=CACHE_TTL, show_spinner=False)
@@ -48,18 +35,17 @@ SELECT
     CURRENT_TIMESTAMP() as timestamp,
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC
 ' as image_url,
-    ARRAY_TO_STRING(ARRAY_CONSTRUCT(
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2),
-        ROUND(RANDOM() * 100, 2)
-    ), ',') as chart_data,
+    ARRAY_CONSTRUCT(
+        0,
+        25,
+        2,
+        6,
+        10,
+        15,
+        6,
+        1,
+        5
+    ) as chart_data,
     .3 as progress,
     CASE
         WHEN RANDOM() < 0.33 THEN 'Low'

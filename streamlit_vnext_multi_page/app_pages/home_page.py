@@ -1,8 +1,6 @@
 import streamlit as st
-from common.snowflake_connection import (
-    run_query,
-    SAMPLE_DATAFRAME_SQL,
-)
+
+from common.snowflake_connection import SAMPLE_DATAFRAME_SQL, run_query
 from common.ui import APP_NAME
 
 f"""
@@ -23,7 +21,7 @@ st.dataframe(
             "Timestamp", format="DD/MM/YY HH:mm"
         ),
         "IMAGE_URL": st.column_config.ImageColumn("Image"),
-        "CHART_DATA": st.column_config.LineChartColumn("Chart Data"),
+        "CHART_DATA": st.column_config.AreaChartColumn("Chart Data"),
         "PROGRESS": st.column_config.ProgressColumn(
             "Progress", min_value=0, max_value=1
         ),
