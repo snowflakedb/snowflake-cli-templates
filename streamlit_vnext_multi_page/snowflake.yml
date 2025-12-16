@@ -9,9 +9,8 @@ entities:
     title: <! title | to_snowflake_identifier !>
     main_file: streamlit_app.py
     query_warehouse: <! query_warehouse | to_snowflake_identifier !>
+    runtime_name: SYSTEM$ST_CONTAINER_RUNTIME_PY3_11
     compute_pool: <! compute_pool | to_snowflake_identifier !>
-    env:
-      vnext: "true"
     pages_dir: app_pages
     artifacts:
       - pyproject.toml
