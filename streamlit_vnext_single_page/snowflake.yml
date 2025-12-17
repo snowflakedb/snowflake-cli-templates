@@ -18,4 +18,3 @@ entities:
       - streamlit_app.py
       - common/*.py
       - README.md
-      - snowflake.yml

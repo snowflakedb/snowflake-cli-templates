@@ -3,19 +3,18 @@ from typing import Any, Sequence
 import pandas as pd
 import streamlit as st
 from snowflake.snowpark import Session
+from streamlit.connections import SnowflakeConnection
 
 # This is the duration for which query results are cached (= 1 hour).
 # You can set it to None to disable caching.
 CACHE_TTL = "1h"
 
 
-def get_connection() -> st.connections.SnowflakeConnection:
-    """Return a Snowflake connection."""
-    return st.connection("snowflake")
+def get_connection() -> SnowflakeConnection:
+    return st.connection("snowflake", type="snowflake")
 
 
 def get_session() -> Session:
-    """Return a cached Snowpark Session."""
     if "_snowflake_session" not in st.session_state:
         st.session_state._snowflake_session = get_connection().session()
     return st.session_state._snowflake_session
