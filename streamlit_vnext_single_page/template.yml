@@ -1,4 +1,4 @@
-minimum_cli_version: "3.12.0"
+minimum_cli_version: "3.13.0"
 files_to_render:
   - snowflake.yml
 variables:
@@ -20,3 +20,6 @@ variables:
   - name: compute_pool
     default: my_compute_pool
     prompt: "What compute pool should the app use?"
+  - name: pypi_access_integration
+    default: pypi_access_integration
+    prompt: "What is the name of your external access integration for PyPI?"

@@ -1,12 +1,5 @@
 import streamlit as st
 
-from common.ui import APP_LOGO
-
-st.logo(
-    APP_LOGO,
-    size="large",
-)
-
 navigation = [
     st.Page(
         "app_pages/home_page.py",

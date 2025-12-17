@@ -11,6 +11,8 @@ entities:
     query_warehouse: <! query_warehouse | to_snowflake_identifier !>
     runtime_name: SYSTEM$ST_CONTAINER_RUNTIME_PY3_11
     compute_pool: <! compute_pool | to_snowflake_identifier !>
+    external_access_integrations:
+      - <! pypi_access_integration | to_snowflake_identifier !>
     pages_dir: app_pages
     artifacts:
       - pyproject.toml

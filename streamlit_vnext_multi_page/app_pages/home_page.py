@@ -20,7 +20,6 @@ st.dataframe(
         "TIMESTAMP": st.column_config.DatetimeColumn(
             "Timestamp", format="DD/MM/YY HH:mm"
         ),
-        "IMAGE_URL": st.column_config.ImageColumn("Image"),
         "CHART_DATA": st.column_config.AreaChartColumn("Chart Data"),
         "PROGRESS": st.column_config.ProgressColumn(
             "Progress", min_value=0, max_value=1
