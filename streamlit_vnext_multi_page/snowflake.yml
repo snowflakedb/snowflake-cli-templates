@@ -17,5 +17,7 @@ entities:
     artifacts:
       - pyproject.toml
       - streamlit_app.py
+      - app_pages/*.py
       - common/*.py
       - README.md
+      - snowflake.yml
