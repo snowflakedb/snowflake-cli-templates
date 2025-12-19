@@ -1,0 +1,23 @@
+definition_version: 2
+entities:
+  <! name | to_snowflake_identifier !>:
+    type: streamlit
+    identifier:
+      name: <! name | to_snowflake_identifier !>
+      database: <! database | to_snowflake_identifier !>
+      schema: <! schema | to_snowflake_identifier !>
+    title: <! title | to_snowflake_identifier !>
+    main_file: streamlit_app.py
+    query_warehouse: <! query_warehouse | to_snowflake_identifier !>
+    runtime_name: SYSTEM$ST_CONTAINER_RUNTIME_PY3_11
+    compute_pool: <! compute_pool | to_snowflake_identifier !>
+    external_access_integrations:
+      - <! pypi_access_integration | to_snowflake_identifier !>
+    pages_dir: app_pages
+    artifacts:
+      - pyproject.toml
+      - streamlit_app.py
+      - app_pages/*.py
+      - common/*.py
+      - README.md
+      - snowflake.yml

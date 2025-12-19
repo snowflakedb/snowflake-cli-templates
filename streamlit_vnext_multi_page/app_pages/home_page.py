@@ -1,0 +1,45 @@
+import streamlit as st
+
+from common.snowflake_connection import SAMPLE_DATAFRAME_SQL, run_query
+from common.ui import APP_NAME
+
+f"""
+# {APP_NAME}
+
+Welcome to the home page of my app!
+
+Let's collect data from Snowflake and display it in a dataframe.
+"""
+
+df = run_query(SAMPLE_DATAFRAME_SQL)
+
+
+st.dataframe(
+    df,
+    column_config={
+        "TIMESTAMP": st.column_config.DatetimeColumn(
+            "Timestamp", format="DD/MM/YY HH:mm"
+        ),
+        "CHART_DATA": st.column_config.AreaChartColumn("Chart Data"),
+        "PROGRESS": st.column_config.ProgressColumn(
+            "Progress", min_value=0, max_value=1
+        ),
+        "STATUS": st.column_config.SelectboxColumn(
+            "Status", options=["Low", "Medium", "High"]
+        ),
+    },
+    hide_index=True,
+)
+
+
+"""
+Cool, right? You can discover the SQL query by expanding the code block below.
+"""
+
+st.expander("View SQL query", expanded=False, icon=":material/code:").code(
+    SAMPLE_DATAFRAME_SQL
+)
+
+"""
+Now, time to use your own data and build your beautiful data app, **enjoy!** :material/celebration:
+"""

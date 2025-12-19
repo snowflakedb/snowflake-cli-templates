@@ -1,0 +1,12 @@
+[project]
+name = "APP_NAME"
+version = "0.1.0"
+description = "APP_DESCRIPTION"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit[snowflake]>=1.50.0",
+]
+
+[tool.uv]
+# earlier versions of numba require a python version < 3.11
+constraint-dependencies = ["numba>=0.56.0"]
