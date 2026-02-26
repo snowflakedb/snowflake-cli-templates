@@ -14,24 +14,34 @@ practices when working with Snowflake environments.
 ## Directory Structure
 
 ```
-<project_name> (4)
-      ├── definitions (2)
-      │   ├────── access.sql
-      │   ├────── ingest.sql
-      │   ├────── raw.sql (3)
-      │   ├────── serve.sql
-      │   └────── [...]
-      └── manifest.yml (1)
+  <project_name> (7)
+        ├── sources
+        │   ├── definitions (2)
+        │   │   ├────── examples.sql (4)
+        │   │   ├────── jinja_demo.sql (5)
+        │   │   └────── [...]
+        │   └── macros (3)
+        │       ├────── grants_macro.sql (6)
+        │       └────── [...]
+        └── manifest.yml (1)
 ```
 
 1. [manifest.yml][manifest] - is the file that defines:
-    * what files should be included in the project definition. In the `include_definitions` list, you can pass items that are Java regex patterns. The default value is `- definitions/.*`, meaning that all files in the `definitions` folder and its subfolders will be included.
-    * configurations that group template variables with their default values. Configurations can be specified here as a series of key-value entries, where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db1"`.
-2. `definitions` - is the default directory as defined in the [manifest.yml][manifest] for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
-3. [raw.sql][raw.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
-4. `<project_name>` - is the repository project folder.
+   * `templating` - the settings for Jinja templating:
+      * `defaults` specifying the default values for template variables. They can be provided here as a series of key-value entries (dictionary), mapping the template variable name to its value. e.g. `example_db_name: "db_default"`.
+      * `configurations` that group template variables and override their defaults. Configurations can be specified here as a series of key-value entries (dictionary), where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db_dev"`.
+   * `targets` - targets specifying targeted account, project object names, templating config
+      * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection.
+      * `templating_config` - the templating configuration name to use. It should refer to a configuration name specified in the `templating.configurations` section.
+      * `account_identifier` - the account identifier to use
+2. `definitions` - is the directory for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
+3. `macros` - is the directory for all .sql files containing project macros. You can use an arbitrarily nested directory structure.
+4. [examples.sql][examples.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
+5. [jinja_demo.sql][jinja_demo.sql] - this is the file that contains some example definitions focusing on demoing some Jinja capabilities, like using loops and macros
+6. [grants_macro.sql][grants_macro.sql] - this is the file that contains a sample Jinja macro granting privileges
+6. `<project_name>` - is the repository project folder.
 
-### How to organize definition files structure
+### How to organize the definition files structure
 
 Once you initialize a project from the template, you create the definitions that will set up your
 account. The template doesn't impose any file structure of definition files, but keep in mind that you
@@ -41,24 +51,19 @@ example uses a more complex file structure:
 
 ```
 <repo-project-folder>
-      ├── definitions
-      │   ├────── wh_db_roles.sql
-      │   ├────── load
-      │   ├────── transform
-      │   └────── serve
-      │           ├────── dashboard_views.sql
-      │           ├────── annual_agg.sql
-      │           └────── team_metrics.sql
+      ├── sources
+      │   ├── definitions
+      │   │   ├────── wh_db_roles.sql
+      │   │   ├────── load
+      │   │   ├────── transform
+      │   │   └────── serve
+      │   │           ├────── dashboard_views.sql
+      │   │           ├────── annual_agg.sql
+      │   │           └────── team_metrics.sql
+      │   └── macros
+      │       ├────── grants.sql
+      │       └────── users.sql
       └── manifest.yml
-```
-
-You must include all files from the `definitions` directory in the `manifest.yaml` file:
-
-```yaml
-manifest_version: 1.0
-
-include_definitions:
-  - definitions/.*
 ```
 
 ## Working on DCM Projects with Snowflake CLI
@@ -66,7 +71,7 @@ include_definitions:
 ### 1. Initialize a DCM Project from the template
 
 To initialize a new DCM Project from this template, execute the following command and provide the
-data required in command prompts. This command creates a new directory with DCM Project files.
+data required in the command prompts. This command creates a new directory with DCM Project files.
 Replace `<project_dir_name>` with the desired name for the project directory.
 
 ```bash
@@ -76,42 +81,41 @@ snow init <project_dir_name> --template dcm_project
 example usage:
 
 ```bash
-snow init MY_PROJECT --template dcm_project
+snow init my_project --template dcm_project
 ```
+
+The `init` command does not create any Snowflake object. It only bootstraps the local project.
 
 ### 2. Define entities in `.sql` files
 
-In this step, you define the entities you want the DCM Project to manage. You can define these entities
-in the prepared `definitions/*.sql` files, but you can also create your own files. If you
-decide to add more `.sql` files, make sure that they will be included in the DCM Project execution process
-by adding their paths to `include_definitions` list in the [manifest.yaml][manifest] file.
+In this step, you define the entities you want the DCM Project to manage. You can define these entities in the prepared `sources/definitions/*.sql` files, but you can also create your own .sql files in the `sources/definitions` folder or any subfolder.
 
 An example content of the definition file:
 ```sql
-    DEFINE ROLE role1;
-    DEFINE DATABASE ROLE role2;
+DEFINE ROLE role1;
+DEFINE DATABASE ROLE role2;
 
-    DEFINE DATABASE db1;
-    DEFINE DATABASE db2;
+DEFINE DATABASE db1;
+DEFINE DATABASE db2;
 
-    DEFINE SCHEMA db1.sch1;
-    DEFINE SCHEMA db2.sch2;
+DEFINE SCHEMA db1.sch1;
+DEFINE SCHEMA db2.sch2;
 
-    DEFINE TABLE db1.sch1.tb1 (col_1 integer, col_2 varchar);
-    DEFINE TABLE db2.sch2.tb2 (col_3 integer, col_4 varchar);
+DEFINE TABLE db1.sch1.tb1 (col_1 integer, col_2 varchar);
+DEFINE TABLE db2.sch2.tb2 (col_3 integer, col_4 varchar);
 ```
 
 ### 3. Create the DCM Project
 
 After entity definitions included in definition files are ready to be applied to your infrastructure,
-you must create a DCM Project. You can perform this operation by executing the command below:
+you must create a DCM Project in Snowflake. You can perform this operation by executing the command below:
 
 ```bash
-snow dcm create EXAMPLE_PROJECT
+snow dcm create
 ```
 
-The DCM Project will be created in the current sessions'
-database and schema or in these, which are specified in the flags of `snow` command.
+The DCM Project will be created in the current session's database and schema or in those specified in the flags of the `snow` command.
+If the fully qualified project name is provided, its database and schema take precedence.
 
 ### 4. DCM Plan
 
@@ -120,67 +124,22 @@ account with this command. It will perform all the same validations and consiste
 like a regular `snow dcm deploy`, but will not persist any changes to your Snowflake account objects.
 
 ```bash
-snow dcm plan <project_identifier> --configuration <config_name>
-```
-
-example usage:
-
-```bash
-snow dcm plan EXAMPLE_PROJECT --configuration "PROD"
-```
-
-#### DCM Plan from prepared project files in Snowflake storage
-
-Alternatively if you synchronize your project files with a [SNOWGIT REPOSITORY][snowgit_docs], develop
-the DCM Project with [a WORKSPACE][workspaces_docs], or simply you have your project files prepared in
-a [USER STAGE][stages_docs], you can specify the source storage with `--from` option, from which you
-would like to use the project files for DCM Project `PLAN` commands.
-
-```bash
-snow dcm plan <project_name> --from <source_stage_name> --configuration <config_name>
-```
-
-example usage:
-
-```bash
-snow dcm plan EXAMPLE_PROJECT --from "@DB.SCH.SOURCE_STAGE/dcm_project" --configuration "PROD"
+snow dcm plan
 ```
 
 ### 5. Deploy DCM Project
 
-In order to apply changes to your Snowflake account you need to deploy the current definition
-the DCM Project. It is recommended to first review a plan of the changes. You can deploy the changes
+In order to apply changes to your Snowflake account, you need to deploy the current definition the DCM Project. It is recommended to first run `snow dcm plan` and review the changeset. If it looks good, you can deploy the changes
 with the following command:
 
 ```bash
-snow dcm deploy <project_name> --configuration <config_name>
-```
-
-example usage:
-
-```bash
-snow dcm deploy EXAMPLE_PROJECT --configuration "DEV"
-```
-
-#### DCM Deploy from prepared project files in Snowflake storage
-
-Alternatively if you synchronize your project files with a [SNOWGIT REPOSITORY][snowgit_docs], develop
-the DCM Project with [a WORKSPACE][workspaces_docs], or simply you have your project files prepared in
-a [USER STAGE][stages_docs], you can specify the source storage with `--from` option, from which you
-would like to use the project files for DCM Project `DEPLOY` command.
-
-```bash
-snow dcm deploy <project_name> --from <source_stage_name> --configuration <config_name>
-```
-
-example usage:
-
-```bash
-snow dcm deploy EXAMPLE_PROJECT --from "DB.SCH.SOURCE_STAGE/dcm_project" --configuration "PROD"
+snow dcm deploy
 ```
 
 [manifest]: ./manifest.yml
-[raw.sql]: ./definitions/raw.sql
+[examples.sql]: ./sources/definitions/examples.sql
+[jinja_demo.sql]: ./sources/definitions/jinja_demo.sql
+[grants_macro.sql]: ./sources/macros/grants_macro.sql
 [template]: ./template.yml
 [workspaces_docs]: https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces
 [stages_docs]: https://docs.snowflake.com/en/user-guide/data-load-local-file-system-create-stage

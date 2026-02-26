@@ -1,7 +1,7 @@
-minimum_cli_version: "3.12.0"
+minimum_cli_version: "3.16.0"
 files_to_render:
-  - definitions/access.sql
+  - manifest.yml
 variables:
-  - name: username
-    prompt: "User with read role"
+  - name: account_name
+    prompt: "Name of the account the project will be connected to"
     type: string
