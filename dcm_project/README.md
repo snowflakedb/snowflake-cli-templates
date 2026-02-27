@@ -30,7 +30,7 @@ practices when working with Snowflake environments.
    * `default_target` - (optional) if you have more than 1 target then you can specify a default target
    * `targets` - it specifies target environments. Target names can match the templating configuration names, but don't have to. Target specifies the targeted account, project object name, owner role, and templating config.
      * `account_identifier` - the account identifier to use
-     * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection.
+     * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection. **Using fully qualified name is the recommended approach** to avoid ambiguity.
      * `project_owner` - the name of the role that has OWNERSHIP of this project object
      * `templating_config` - (optional) the templating configuration name to use. It should refer to a configuration name specified in the `templating.configurations` section.
    * `templating` - (optional) the settings for Jinja templating:
@@ -116,9 +116,19 @@ you must create a DCM Project in Snowflake. You can perform this operation by ex
 ```bash
 snow dcm create
 ```
+It creates the object with the name coming from target pointed by the `default_target` property in the manifest.
+
+You can specify a different target by adding the `--target` option, for example:
+
+```bash
+snow dcm create --target DEV
+```
+It creates the project with the name specified in the `DEV` target.
 
 The DCM Project will be created in the current session's database and schema or in those specified in the flags of the `snow` command.
-If the fully qualified project name is provided, its database and schema take precedence.
+If the fully qualified project name is provided in the target, its database and schema take precedence.
+This will also fail if there is no fully qualified name defined and no schema-context provided by the connection.
+
 
 ### 4. DCM Plan
 
@@ -130,6 +140,12 @@ like a regular `snow dcm deploy`, but will not persist any changes to your Snowf
 snow dcm plan
 ```
 
+You can also specify the `--target` property, like for the `snow dcm create` command:
+
+```bash
+snow dcm plan --target DEV
+```
+
 ### 5. Deploy DCM Project
 
 In order to apply changes to your Snowflake account, you need to deploy the current definition the DCM Project. It is recommended to first run `snow dcm plan` and review the changeset. If it looks good, you can deploy the changes
@@ -138,6 +154,13 @@ with the following command:
 ```bash
 snow dcm deploy
 ```
+
+You can also specify the `--target` property, like for the `snow dcm create` command:
+
+```bash
+snow dcm deploy --target DEV
+```
+
 
 [manifest]: ./manifest.yml
 [examples.sql]: ./sources/definitions/examples.sql
