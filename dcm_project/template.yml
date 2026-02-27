@@ -5,3 +5,6 @@ variables:
   - name: account_name
     prompt: "Name of the account the project will be connected to"
     type: string
+  - name: project_owner
+    prompt: "Name of the role that will have OWNERSHIP privilege on this project object"
+    type: string
