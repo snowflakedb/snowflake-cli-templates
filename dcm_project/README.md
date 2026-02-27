@@ -27,7 +27,8 @@ practices when working with Snowflake environments.
 ```
 
 1. [manifest.yml][manifest] - is the file that defines:
-   * `targets` - targets specifying targeted account, project object names, owner role, templating config
+   * `default_target` - (optional) if you have more than 1 target then you can specify a default target
+   * `targets` - it specifies target environments. Target names can match the templating configuration names, but don't have to. Target specifies the targeted account, project object name, owner role, and templating config.
      * `account_identifier` - the account identifier to use
      * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection.
      * `project_owner` - the name of the role that has OWNERSHIP of this project object
