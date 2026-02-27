@@ -45,15 +45,3 @@ grant USAGE on database DCM_DEMO_1{{env_suffix}} to role DCM_DEMO_1{{env_suffix}
 grant USAGE on schema DCM_DEMO_1{{env_suffix}}.ANALYTICS to role DCM_DEMO_1{{env_suffix}}_READ;
 grant SELECT on ALL tables in database DCM_DEMO_1{{env_suffix}} to role DCM_DEMO_1{{env_suffix}}_READ;
 grant SELECT on dynamic table DCM_DEMO_1{{env_suffix}}.ANALYTICS.DRINKS to role DCM_DEMO_1{{env_suffix}}_READ;
-
-
-attach post_hook
-as [
-    create or replace FILE FORMAT DCM_DEMO_1{{env_suffix}}.ANALYTICS.DCM_DEMO_CSV
-      TYPE = CSV
-      FIELD_DELIMITER = '|'
-      SKIP_HEADER = 1
-      NULL_IF = ('NULL', 'null')
-      EMPTY_FIELD_AS_NULL = true
-      COMPRESSION = gzip;
-];
