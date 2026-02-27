@@ -27,13 +27,14 @@ practices when working with Snowflake environments.
 ```
 
 1. [manifest.yml][manifest] - is the file that defines:
+   * `targets` - targets specifying targeted account, project object names, owner role, templating config
+     * `account_identifier` - the account identifier to use
+     * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection.
+     * `project_owner` - the name of the role that has OWNERSHIP of this project object
+     * `templating_config` - the templating configuration name to use. It should refer to a configuration name specified in the `templating.configurations` section.
    * `templating` - the settings for Jinja templating:
       * `defaults` specifying the default values for template variables. They can be provided here as a series of key-value entries (dictionary), mapping the template variable name to its value. e.g. `example_db_name: "db_default"`.
       * `configurations` that group template variables and override their defaults. Configurations can be specified here as a series of key-value entries (dictionary), where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db_dev"`.
-   * `targets` - targets specifying targeted account, project object names, templating config
-      * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection.
-      * `templating_config` - the templating configuration name to use. It should refer to a configuration name specified in the `templating.configurations` section.
-      * `account_identifier` - the account identifier to use
 2. `definitions` - is the directory for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
 3. `macros` - is the directory for all .sql files containing project macros. You can use an arbitrarily nested directory structure.
 4. [examples.sql][examples.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
@@ -62,7 +63,8 @@ example uses a more complex file structure:
       │   │           └────── team_metrics.sql
       │   └── macros
       │       ├────── grants.sql
-      │       └────── users.sql
+      │       └────── utils
+      │               └────── date_time.sql
       └── manifest.yml
 ```
 
