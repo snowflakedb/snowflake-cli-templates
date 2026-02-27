@@ -32,12 +32,12 @@ practices when working with Snowflake environments.
      * `account_identifier` - the account identifier to use
      * `project_name` - the name of the DCM Project to use in Snowflake. It can be either a simple name or a fully qualified name, including the database and schema names. If the fully qualified project name is provided, its database and schema take precedence over the configured connection.
      * `project_owner` - the name of the role that has OWNERSHIP of this project object
-     * `templating_config` - the templating configuration name to use. It should refer to a configuration name specified in the `templating.configurations` section.
-   * `templating` - the settings for Jinja templating:
-      * `defaults` specifying the default values for template variables. They can be provided here as a series of key-value entries (dictionary), mapping the template variable name to its value. e.g. `example_db_name: "db_default"`.
-      * `configurations` that group template variables and override their defaults. Configurations can be specified here as a series of key-value entries (dictionary), where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db_dev"`.
+     * `templating_config` - (optional) the templating configuration name to use. It should refer to a configuration name specified in the `templating.configurations` section.
+   * `templating` - (optional) the settings for Jinja templating:
+      * `defaults` - (optional) specifying the default values for template variables. They can be provided here as a series of key-value entries (dictionary), mapping the template variable name to its value. e.g. `example_db_name: "db_default"`.
+      * `configurations` - (optional) group template variables and override their defaults. Configurations can be specified here as a series of key-value entries (dictionary), where the key is a case-insensitive configuration name, and the value is a series of key-value entries, mapping the template variable name to its value. Each configuration contains a set of key-value pairs, e.g. `example_db_name: "db_dev"`.
 2. `definitions` - is the directory for all .sql files containing project entity definitions. You can use an arbitrarily nested directory structure.
-3. `macros` - is the directory for all .sql files containing project macros. You can use an arbitrarily nested directory structure.
+3. `macros` - (optional) is the directory for all .sql files containing project macros. You can use an arbitrarily nested directory structure.
 4. [examples.sql][examples.sql] - this is the file that contains some example definitions of project entities. You define particular entities with a `DEFINE` keyword which behaves similar to `CREATE OR ALTER`, e.g. `DEFINE DATABASE d1 COMMENT = 'some comment'`. Removing a `DEFINE` statement results in the entity being dropped.
 5. [jinja_demo.sql][jinja_demo.sql] - this is the file that contains some example definitions focusing on demoing some Jinja capabilities, like using loops and macros
 6. [grants_macro.sql][grants_macro.sql] - this is the file that contains a sample Jinja macro granting privileges
