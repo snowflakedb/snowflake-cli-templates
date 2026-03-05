@@ -5,20 +5,11 @@ with
     comment = 'For Quickstart Demo of DCM Projects PrPr'
 ;
 
-define role DCM_DEMO_1{{env_suffix}}_READ;
-
-{% for user_name in users %}
-    grant role DCM_DEMO_1{{env_suffix}}_READ to user {{user_name}};
-{% endfor %}
-
-
 define database DCM_DEMO_1{{env_suffix}}
-    comment = 'This is a Quickstart Demo for DCM Projects Private Preview'
-;
+    comment = 'This is a Quickstart Demo for DCM Projects Private Preview';
 
 define schema DCM_DEMO_1{{env_suffix}}.ANALYTICS
     comment = 'For Task copying sample data into landing tables';
-
 
 define table DCM_DEMO_1{{env_suffix}}.ANALYTICS.ALL_ITEMS(
     ITEM_NAME varchar,
@@ -31,7 +22,7 @@ define dynamic table DCM_DEMO_1{{env_suffix}}.ANALYTICS.DRINKS
     warehouse = DCM_DEMO_1_WH{{env_suffix}}
     target_lag = '6 hours'
     initialize = 'ON_CREATE'
-as
+  as
 select
     *
 from
@@ -40,6 +31,7 @@ where
     ARRAY_CONTAINS('DRINKS'::variant, ITEM_CATEGORY)
 ;
 
+define role DCM_DEMO_1{{env_suffix}}_READ;
 
 grant USAGE on database DCM_DEMO_1{{env_suffix}} to role DCM_DEMO_1{{env_suffix}}_READ;
 grant USAGE on schema DCM_DEMO_1{{env_suffix}}.ANALYTICS to role DCM_DEMO_1{{env_suffix}}_READ;
