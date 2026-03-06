@@ -9,13 +9,13 @@ default_target: DCM_DEV
 targets:
   DCM_DEV:
     account_identifier: <! account_name !>
-    project_name: DCM_DEMO.PROJECTS.DCM_PROJECT_DEV
+    project_name: <! project_name !>_DEV
     project_owner: <! project_owner !>
     templating_config: DEV
 
   DCM_PROD:
     account_identifier: <! account_name !>
-    project_name: DCM_DEMO.PROJECTS.DCM_PROJECT_PROD
+    project_name: <! project_name !>_PROD
     project_owner: <! project_owner !>
     templating_config: PROD
 

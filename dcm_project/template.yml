@@ -1,10 +1,16 @@
-minimum_cli_version: "3.16.0"
+minimum_cli_version: "3.17.0"
 files_to_render:
   - manifest.yml
 variables:
   - name: account_name
     prompt: "Name of the account the project will be connected to"
     type: string
+    default_computed: connection.account
   - name: project_owner
     prompt: "Name of the role that will have OWNERSHIP privilege on this project object"
+    type: string
+    default_computed: connection.role
+  - name: project_name
+    prompt: "Name of this project object"
+    default: DCM_DEMO.PROJECTS.DCM_PROJECT
     type: string
