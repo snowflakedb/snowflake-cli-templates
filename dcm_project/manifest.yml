@@ -9,15 +9,9 @@ default_target: DCM_DEV
 targets:
   DCM_DEV:
     account_identifier: <! account_name !>
-    project_name: <! project_name !>_DEV
+    project_name: <! db_name !>.<! schema_name !>.<! project_name !>_DEV
     project_owner: <! project_owner !>
     templating_config: DEV
-
-  DCM_PROD:
-    account_identifier: <! account_name !>
-    project_name: <! project_name !>_PROD
-    project_owner: <! project_owner !>
-    templating_config: PROD
 
 #---------------------------------------------
 
@@ -34,14 +28,3 @@ templating:
         - name: "DEV_TEAM"
           data_retention_days: 1
           add_employees: TRUE
-
-    PROD:
-      env_suffix: ""
-      wh_size: "LARGE"
-      teams:
-        - name: "HR"
-          data_retention_days: 7
-          add_employees: TRUE
-        - name: "Marketing"
-          data_retention_days: 1
-          add_employees: FALSE

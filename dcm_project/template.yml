@@ -1,4 +1,4 @@
-minimum_cli_version: "3.17.0"
+minimum_cli_version: "3.16.0"
 files_to_render:
   - manifest.yml
 variables:
@@ -10,7 +10,15 @@ variables:
     prompt: "Name of the role that will have OWNERSHIP privilege on this project object"
     type: string
     default_computed: connection.role
+  - name: db_name
+    prompt: "Name of the database for this project object"
+    type: string
+    default_computed: connection.db
+  - name: schema_name
+    prompt: "Name of the schema for this project object"
+    type: string
+    default_computed: connection.schema
   - name: project_name
     prompt: "Name of this project object"
-    default: DCM_DEMO.PROJECTS.DCM_PROJECT
+    default: DCM_PROJECT
     type: string
