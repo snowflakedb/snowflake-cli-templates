@@ -8,7 +8,7 @@ default_target: DCM_DEV
 
 targets:
   DCM_DEV:
-    account_identifier: <! account_name !>
+    account_identifier: <! account_identifier !>
     project_name: <! db_name !>.<! schema_name !>.<! project_name !>_DEV
     project_owner: <! project_owner !>
     templating_config: DEV

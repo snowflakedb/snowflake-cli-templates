@@ -2,8 +2,8 @@ minimum_cli_version: "3.16.0"
 files_to_render:
   - manifest.yml
 variables:
-  - name: account_name
-    prompt: "Name of the account the project will be connected to"
+  - name: account_identifier
+    prompt: "Identifier of the account the project will be connected to (<organization_name>-<account_identifier>)"
     type: string
     default_computed: connection.account
   - name: project_owner
