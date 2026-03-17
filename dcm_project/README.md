@@ -36,8 +36,8 @@ practices when working with Snowflake environments.
 
 ### How to organize the definition files structure
 
-Once you initialize a project from the template, you create the definitions that will set up your
-account. The template doesn't impose any file structure of definition files, but keep in mind that you
+Once you initialize a project folder from the template, you can write the object definitions and then deploy them to a specified target.
+The template doesn't impose any file structure of definition files, but keep in mind that you
 don't need to keep all definition statements in a single file. You can organize the code in multiple
 files divided into different directories, such as single object type per file. The following
 example uses a more complex file structure:
