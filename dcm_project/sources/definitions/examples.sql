@@ -2,11 +2,11 @@ define warehouse DCM_DEMO_1_WH{{env_suffix}}
 with
     warehouse_size = '{{wh_size}}'
     auto_suspend = 300
-    comment = 'For Quickstart Demo of DCM Projects PrPr'
+    comment = 'For Quickstart Demo of DCM Projects'
 ;
 
 define database DCM_DEMO_1{{env_suffix}}
-    comment = 'This is a Quickstart Demo for DCM Projects Private Preview';
+    comment = 'This is a Quickstart Demo for DCM Projects';
 
 define schema DCM_DEMO_1{{env_suffix}}.ANALYTICS
     comment = 'For Task copying sample data into landing tables';
