@@ -1,19 +1,30 @@
-manifest_version: 1.0
+manifest_version: 2
 
-type: dcm_project
+type: DCM_PROJECT
 
-include_definitions:
-  - definitions/.*
+#---------------------------------------------
 
-configurations:
-  DEV:
-    db: "DEV"
-    wh_size: "X-SMALL"
-    role: "DEV"
-    scope: "TEST"
+default_target: DCM_DEV
 
-  PROD:
-    db: "PROD"
-    wh_size: "LARGE"
-    role: "PROD"
-    scope: "ALL"
+targets:
+  DCM_DEV:
+    account_identifier: <! account_identifier !>
+    project_name: <! db_name !>.<! schema_name !>.<! project_name !>_DEV
+    project_owner: <! project_owner !>
+    templating_config: DEV
+
+#---------------------------------------------
+
+templating:
+  defaults:
+    project_owner_role: <! project_owner !>
+    wh_size: "SMALL"
+
+  configurations:
+    DEV:
+      env_suffix: "_DEV"
+      wh_size: "X-SMALL"
+      teams:
+        - name: "DEV_TEAM"
+          data_retention_days: 1
+          add_employees: TRUE
