@@ -1,3 +1,3 @@
-* @snowflakedb/snowcli
+* @snowflakedb/snowcli @snowflakedb/client-side-interfaces
 
 app_* @snowflakedb/nade
