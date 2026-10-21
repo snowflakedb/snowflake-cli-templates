@@ -26,6 +26,10 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install Snowflake CLI
-        run: python -m pip install pytest snowflake-snowpark-python click==8.2.1 snowflake-cli${{ matrix.cli_version }}
+        # This job runs snow init against the PR tree, so install the CLI with pip.
+        # Keep click below 8.3 (8.3 broke older labs CLIs). Do not pin 8.2.1:
+        # current snowflake-cli requires click==8.1.8, and 8.2.1 makes pip
+        # backtrack to 3.7.x whose `snow snowpark build` fails.
+        run: python -m pip install pytest snowflake-snowpark-python 'click<8.3' snowflake-cli${{ matrix.cli_version }}
       - name: Run tests
         run: python -m pytest .tests/ -vv
