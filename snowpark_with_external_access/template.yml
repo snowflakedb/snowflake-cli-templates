@@ -5,21 +5,21 @@ files_to_render:
   - setup.sql
 variables:
   - name: database_name
-    prompt: "Database where the functions and procedures will be created"
+    prompt: "Database where the functions and procedures will be created. Unquoted names rewrite spaces/hyphens to underscores; wrap in double quotes to keep them."
     type: string
   - name: schema_name
-    prompt: "Schema where the functions and procedures will be created"
+    prompt: "Schema where the functions and procedures will be created. Unquoted names rewrite spaces/hyphens to underscores; wrap in double quotes to keep them."
     type: string
     default: public
   - name: stage_name
-    prompt: "What stage should the functions and procedures be deployed to"
+    prompt: "Stage for the functions and procedures. Unquoted names rewrite spaces/hyphens to underscores; wrap in double quotes to keep them."
     default: dev_deployment
     type: string
   - name: secret_name
-    prompt: "Secret name to be used in the functions and procedures"
+    prompt: "Secret name used by the functions and procedures. Unquoted names rewrite spaces/hyphens to underscores; wrap in double quotes to keep them."
     type: string
     default: snowpark_secret
   - name: external_access_integration_name
-    prompt: "External access integration name to be used in the functions and procedures"
+    prompt: "External access integration name. Unquoted names rewrite spaces/hyphens to underscores; wrap in double quotes to keep them. Used in both snowflake.yml and setup.sql."
     type: string
     default: snowpark_external_access_integration

@@ -16,7 +16,7 @@ CREATE OR REPLACE NETWORK RULE snowpark_example_network_rule
   TYPE = HOST_PORT
   VALUE_LIST = ('docs.snowflake.com');
 
-CREATE EXTERNAL ACCESS INTEGRATION IF NOT EXISTS <! external_access_integration_name !>
+CREATE EXTERNAL ACCESS INTEGRATION IF NOT EXISTS <! external_access_integration_name | to_snowflake_identifier !>
   ALLOWED_NETWORK_RULES = (snowpark_example_network_rule)
   ALLOWED_AUTHENTICATION_SECRETS = (<! secret_name | to_snowflake_identifier !>)
   ENABLED = true;
@@ -44,6 +44,6 @@ snow snowpark deploy
 You can test the deployed snowpark application by running:
 
 ```bash
-snow snowpark execute function "<! database_name | to_snowflake_identifier !>.<! schema_name | to_snowflake_identifier !>.request_function()";
-snow snowpark execute procedure "<! database_name | to_snowflake_identifier !>.<! schema_name | to_snowflake_identifier !>.request_procedure()";
+snow snowpark execute function '<! database_name | to_snowflake_identifier !>.<! schema_name | to_snowflake_identifier !>.request_function()';
+snow snowpark execute procedure '<! database_name | to_snowflake_identifier !>.<! schema_name | to_snowflake_identifier !>.request_procedure()';
 ```

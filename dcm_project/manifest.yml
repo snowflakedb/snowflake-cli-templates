@@ -8,16 +8,21 @@ default_target: DCM_DEV
 
 targets:
   DCM_DEV:
-    account_identifier: <! account_identifier !>
-    project_name: <! db_name !>.<! schema_name !>.<! project_name !>_DEV
-    project_owner: <! project_owner !>
+    account_identifier: <! account_identifier | tojson !>
+<!!- if project_name[:1] == '"' and project_name[-1:] == '"' -!!>
+<!!- set suffixed_raw = project_name[:-1] ~ '_DEV"' -!!>
+<!!- else -!!>
+<!!- set suffixed_raw = project_name ~ '_DEV' -!!>
+<!!- endif !!>
+    project_name: <! ((db_name | to_snowflake_identifier) ~ '.' ~ (schema_name | to_snowflake_identifier) ~ '.' ~ (suffixed_raw | to_snowflake_identifier)) | tojson !>
+    project_owner: <! project_owner | to_snowflake_identifier | tojson !>
     templating_config: DEV
 
 #---------------------------------------------
 
 templating:
   defaults:
-    project_owner_role: <! project_owner !>
+    project_owner_role: <! project_owner | to_snowflake_identifier | tojson !>
     wh_size: "SMALL"
 
   configurations:

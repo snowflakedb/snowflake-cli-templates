@@ -1,6 +1,9 @@
 # For more information about structure of snowflake.yml for Snowpark see
 # https://docs.snowflake.com/en/developer-guide/snowflake-cli/snowpark/create
 definition_version: '2'
+<!!- if '<%' in (database_name ~ schema_name ~ stage_name ~ secret_name ~ external_access_integration_name) -!!>
+<! snow_init_rejected_jinja_in_identifier !>
+<!!- endif !!>
 entities:
   request_function:
     type: function
@@ -39,14 +42,15 @@ mixins:
   external_access:
     secrets:
       # generic_secret is key used by the get_secret_value method to reference the secret
-      generic_secret: <! secret_name | to_snowflake_identifier !>
+      generic_secret: <! secret_name | to_snowflake_identifier | tojson !>
     external_access_integrations:
-      - <! external_access_integration_name !>
+      - <! external_access_integration_name | to_snowflake_identifier | tojson !>
   snowpark_shared:
     artifacts:
       - app/
-    stage: <% ctx.env.database %>.<% ctx.env.schema %>.<! stage_name | to_snowflake_identifier !>
+    stage: <% ctx.env.database %>.<% ctx.env.schema %>.<% ctx.env.stage_name %>
 
 env:
-  schema: <! schema_name | to_snowflake_identifier !>
-  database: <! database_name | to_snowflake_identifier !>
+  schema: <! schema_name | to_snowflake_identifier | tojson !>
+  database: <! database_name | to_snowflake_identifier | tojson !>
+  stage_name: <! stage_name | to_snowflake_identifier | tojson !>
